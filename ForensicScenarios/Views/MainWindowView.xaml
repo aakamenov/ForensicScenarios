@@ -1,0 +1,22 @@
+﻿<Window x:Class="ForensicScenarios.Views.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:local="clr-namespace:ForensicScenarios.Views"
+        mc:Ignorable="d"
+        Title="MainWindowView" Height="610" Width="800">
+    <Grid Margin="20">
+        <TabControl Name="Items" SelectedItem="{Binding SelectedTab}">
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <ListBox ItemsSource="{Binding Scenarios}" SelectedItem="{Binding SelectedScenario}"/>
+                        <TextBox Text="{Binding SelectedScenario.Description}" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    </Grid>
+</Window>
