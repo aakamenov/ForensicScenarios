@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using Caliburn.Micro;
+using ForensicScenarios.Tools;
 
 namespace ForensicScenarios.Scenarios
 {
@@ -35,7 +36,7 @@ namespace ForensicScenarios.Scenarios
 
         public Shellbag()
         {
-            Description = "The Shellbags Scenario\n\nThis scenario will create randomly named folders and files. The files will be copied, moved and in some cases deleted. This will cause changes to be made to the ShellBags information in the registry.\n\nClick the button on the left to select the scenario followed by the Execute button when ready.";
+            Description = "The Shellbags Scenario\n\nThis scenario will create randomly named folders and files. The files will be copied, moved and in some cases deleted. This will cause changes to be made to the ShellBags information in the registry.";
         }
 
         public void Run()
@@ -84,8 +85,6 @@ namespace ForensicScenarios.Scenarios
                 {
                     Status = "Removing previous files...✖\n";
                 }
-
-                Waitabit(2);
             }
             else
                 StatusValue = 1000;
@@ -105,8 +104,6 @@ namespace ForensicScenarios.Scenarios
             {
                 Status = "File deleted...✖\n";
             }
-
-            Waitabit(2);
         }
 
         private void MoveFile(string f, string d)
@@ -123,8 +120,6 @@ namespace ForensicScenarios.Scenarios
             {
                 Status = "File moved...✖\n";
             }
-
-            Waitabit(2);
         }
 
         private void CopyFile(string f, string d)
@@ -141,8 +136,6 @@ namespace ForensicScenarios.Scenarios
             {
                 Status = "File Copied...✖\n";
             }
-
-            Waitabit(2);
         }
 
         private void CreateFile(string t, string p, string f)
@@ -158,8 +151,6 @@ namespace ForensicScenarios.Scenarios
             {
                 Status = "File " + f + " created...✖\n";
             }
-
-            Waitabit(2);
         }
 
         private void CreateFolder(string path, string s)
@@ -174,8 +165,6 @@ namespace ForensicScenarios.Scenarios
             {
                 Status = "Folder " + s + " created...✖\n";
             }
-
-            Waitabit(2);
         }
 
         private void ExecuteCommandSync(object command)
@@ -190,18 +179,6 @@ namespace ForensicScenarios.Scenarios
             process.Start();
             
             Console.WriteLine(process.StandardOutput.ReadToEnd());
-        }
-
-        private void Waitabit(int secondos)
-        {
-            DateTime dateTime = DateTime.Now.AddSeconds((double)secondos);
-            int num = 0;
-
-            while (num == 0)
-            {
-                if (DateTime.Now >= dateTime)
-                    num = 1;
-            }
         }
     }
 }

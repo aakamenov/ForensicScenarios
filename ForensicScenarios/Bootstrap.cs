@@ -20,6 +20,7 @@ namespace ForensicScenarios
             container = new SimpleContainer();
 
             container.Singleton<IWindowManager, WindowManager>();
+            container.Singleton<IEventAggregator, EventAggregator>();
             container.PerRequest<MainWindowViewModel>();
             container.PerRequest<ShellbagScenarioViewModel>();
             container.PerRequest<EncryptionScenarioViewModel>();

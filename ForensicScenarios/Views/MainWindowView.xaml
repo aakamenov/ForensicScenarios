@@ -3,20 +3,67 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:local="clr-namespace:ForensicScenarios.Views"
+        xmlns:ikriv="clr-namespace:IKriv.Windows.Controls.Behaviors"
         mc:Ignorable="d"
-        Title="MainWindowView" Height="610" Width="800">
-    <Grid Margin="20">
-        <TabControl Name="Items" SelectedItem="{Binding SelectedTab}">
-            <TabControl.ContentTemplate>
+        Title="Forensic Scenarios" 
+        Height="580" Width="700"
+        MinHeight="580" MinWidth="700">
+    
+    <Grid Margin="20 20 20 0">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="4*"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0" Name="Items" SelectedItem="{Binding SelectedTab}" ikriv:TabContent.IsCached="True">
+            <ikriv:TabContent.Template>
                 <DataTemplate>
+                    
                     <StackPanel>
-                        <ListBox ItemsSource="{Binding Scenarios}" SelectedItem="{Binding SelectedScenario}"/>
-                        <TextBox Text="{Binding SelectedScenario.Description}" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+
+                        <ListView cal:Message.Attach="[Event MouseMove] = [Action ShowDescription($source)];
+                                                      [Event MouseLeave] = [Action EmptyDescription];
+                                                      [Event SelectionChanged] = [Action SelectionChanged($eventArgs)];"
+                                  ItemsSource="{Binding Scenarios}"  
+                                  SelectionMode="Multiple"/>
+
                     </StackPanel>
+                    
                 </DataTemplate>
-            </TabControl.ContentTemplate>
+            </ikriv:TabContent.Template>
         </TabControl>
+
+        <Grid Grid.Row="1" Margin="0 10 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="4*"/>
+            </Grid.RowDefinitions>
+
+            <TextBox Grid.Row="0" 
+                     Text="{Binding ScenarioDescription}" 
+                     IsReadOnly="True" Margin="0 0 0 0" 
+                     TextWrapping="Wrap" 
+                     VerticalScrollBarVisibility="Auto"/>
+            
+            <Grid Grid.Row="1">
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Button Grid.Row="1" Grid.Column="0" Content="Exit" Margin="35 20 35 20"/>
+                <Button Grid.Row="1" Grid.Column="1" Content="Help" Margin="35 20 35 20"/>
+                <Button Grid.Row="1" Grid.Column="2" 
+                        cal:Message.Attach="RunScenarios"
+                        Content="{Binding RunScenariosButtonText}"                         
+                        Margin="35 20 35 20"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
