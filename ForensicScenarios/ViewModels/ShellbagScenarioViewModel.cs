@@ -4,11 +4,11 @@ namespace ForensicScenarios.ViewModels
 {
     public class ShellbagScenarioViewModel : ScenarioCategoryViewModel
     {
-        protected override void Initialize()
+        public ShellbagScenarioViewModel(Shellbag shellbag) : base()
         {
             DisplayName = "Shellbags";
 
-            Scenarios.Add(new Shellbag());
+            Scenarios.Add(shellbag);
         }
     }
 }

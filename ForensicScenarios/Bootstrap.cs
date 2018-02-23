@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using Caliburn.Micro;
 using ForensicScenarios.ViewModels;
+using ForensicScenarios.Scenarios;
 
 namespace ForensicScenarios
 {
@@ -21,14 +22,25 @@ namespace ForensicScenarios
 
             container.Singleton<IWindowManager, WindowManager>();
             container.Singleton<IEventAggregator, EventAggregator>();
+            
             container.PerRequest<MainWindowViewModel>();
             container.PerRequest<ShellbagScenarioViewModel>();
             container.PerRequest<EncryptionScenarioViewModel>();
+            container.PerRequest<ReverseShellViewModel>();
+            container.PerRequest<ScreenshotScenarioViewModel>();
+            container.PerRequest<TextFieldPromptViewModel>();
+
+            container.PerRequest<DESEncryption>();
+            container.PerRequest<ReverseShell>();
+            container.PerRequest<Screenshot1>();
+            container.PerRequest<Screenshot2>();
+            container.PerRequest<Shellbag>();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
             DisplayRootViewFor<MainWindowViewModel>();
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
 
         protected override object GetInstance(Type service, string key)

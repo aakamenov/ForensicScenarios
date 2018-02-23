@@ -4,12 +4,15 @@ namespace ForensicScenarios.ViewModels
 {
     public class ScreenshotScenarioViewModel : ScenarioCategoryViewModel
     {
-        protected override void Initialize()
+        public ScreenshotScenarioViewModel(
+            Screenshot1 screenshot1,
+            Screenshot2 screenshot2)
+            : base()
         {
             DisplayName = "Screenshots";
 
-            Scenarios.Add(new Screenshot1());
-            Scenarios.Add(new Screenshot2());
+            Scenarios.Add(screenshot1);
+            Scenarios.Add(screenshot2);
         }
     }
 }

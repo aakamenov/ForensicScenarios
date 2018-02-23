@@ -2,11 +2,13 @@
 using System.Diagnostics;
 using System.IO;
 using Caliburn.Micro;
+using System.Threading.Tasks;
 using ForensicScenarios.Tools;
+using ForensicScenarios.Events;
 
 namespace ForensicScenarios.Scenarios
 {
-    internal class Shellbag : PropertyChangedBase, IScenario
+    public class Shellbag : PropertyChangedBase, IScenario
     {
         public string Description { get; set; }
 
@@ -20,22 +22,25 @@ namespace ForensicScenarios.Scenarios
             }
         }
 
-        public int StatusValue
+        public bool IsSelected
         {
-            get => statusValue;
-            private set
+            get => isSelected;
+            set
             {
-                statusValue = value;
-                NotifyOfPropertyChange(nameof(StatusValue));
+                isSelected = value;
+                NotifyOfPropertyChange(nameof(IsSelected));
             }
         }
 
-        private const string NAME = "Shellbags"; //Used to control the text displayed in the listbox
+        private bool isSelected;
         private string status;
-        private int statusValue;
 
-        public Shellbag()
+        private const string NAME = "Shellbags"; //Used to control the text displayed in the listbox
+        private readonly IEventAggregator eventAggregator;
+
+        public Shellbag(IEventAggregator aggregator)
         {
+            eventAggregator = aggregator;
             Description = "The Shellbags Scenario\n\nThis scenario will create randomly named folders and files. The files will be copied, moved and in some cases deleted. This will cause changes to be made to the ShellBags information in the registry.";
         }
 
@@ -64,6 +69,8 @@ namespace ForensicScenarios.Scenarios
             CopyFile("\\" + s1 + "\\" + str1 + ".txt", "\\" + s3 + "\\" + str1 + ".txt");
             MoveFile("\\" + s2 + "\\" + str2 + ".txt", "\\" + s3 + "\\" + str2 + ".txt");
             DeleteFile("\\" + s1 + "\\", "*.txt");
+
+            eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
         }
 
         public override string ToString()
@@ -79,15 +86,12 @@ namespace ForensicScenarios.Scenarios
                 {
                     Status = "Removing previous files...✔\n";
                     Directory.Delete(path, true);
-                    StatusValue = 1000;
                 }
                 catch (Exception)
                 {
                     Status = "Removing previous files...✖\n";
                 }
             }
-            else
-                StatusValue = 1000;
         }
 
         private void DeleteFile(string f, string file)
@@ -98,7 +102,6 @@ namespace ForensicScenarios.Scenarios
             {
                 ExecuteCommandSync((object)("del  " + str + f + file));
                 Status = "File deleted...✔\n";
-                StatusValue = 1000;
             }
             catch (Exception)
             {
@@ -114,7 +117,6 @@ namespace ForensicScenarios.Scenarios
             {
                 ExecuteCommandSync((object)("move  " + str + f + " " + str + d));
                 Status = "File moved...✔\n";
-                StatusValue = 1000;
             }
             catch (Exception)
             {
@@ -130,7 +132,6 @@ namespace ForensicScenarios.Scenarios
             {
                 ExecuteCommandSync((object)("copy  " + str + f + " " + str + d));
                 Status = "File Copied...✔\n";
-                StatusValue = 1000;
             }
             catch (Exception)
             {
@@ -145,7 +146,6 @@ namespace ForensicScenarios.Scenarios
             try
             {
                 Status = "File " + f + " created...✔\n";
-                StatusValue = 1000;
             }
             catch (Exception)
             {
@@ -159,7 +159,6 @@ namespace ForensicScenarios.Scenarios
             {
                 Directory.CreateDirectory(path + s);
                 Status = "Folder " + s + " created...✔\n";
-                StatusValue = 1000;
             }
             catch (Exception)
             {

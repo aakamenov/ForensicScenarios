@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ForensicScenarios.Properties
-{
-
-
+namespace ForensicScenarios.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,52 +19,169 @@ namespace ForensicScenarios.Properties
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    internal class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ForensicScenarios.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to abrupt
+        ///blood
+        ///kill
+        ///embarrassed
+        ///amusing
+        ///attract
+        ///group
+        ///include
+        ///scattered
+        ///white
+        ///tramp
+        ///bad
+        ///efficient
+        ///books
+        ///tumble
+        ///terrific
+        ///airplane
+        ///trees
+        ///helpful
+        ///stingy
+        ///cheerful
+        ///ants
+        ///zippy
+        ///fuzzy
+        ///naive
+        ///print
+        ///slope
+        ///dysfunctional
+        ///normal
+        ///subtract
+        ///daily
+        ///children
+        ///pump
+        ///eyes
+        ///internal
+        ///measure
+        ///nauseating
+        ///refuse
+        ///note
+        ///stain
+        ///ticket
+        ///bright
+        ///improve
+        ///gifted
+        ///fish
+        ///pathetic
+        ///vengeful
+        ///claim
+        ///romantic
+        ///flower
+        ///toes
+        ///quiet
+        ///cautious
+        ///thaw
+        ///lush
+        ///color
+        ///number
+        ///property
+        ///powerful
+        ///carpenter
+        ///silk
+        ///pan
+        ///egg [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Passwords {
+            get {
+                return ResourceManager.GetString("Passwords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to coldstream
+        ///carious
+        ///unharvested
+        ///triplet
+        ///steed
+        ///lacunule
+        ///jaws
+        ///harp
+        ///clustery
+        ///trickily
+        ///stereotyping
+        ///pituitousness
+        ///manukau
+        ///elaborator
+        ///sublibrarianship
+        ///cobbett
+        ///specifier
+        ///bipyramidal
+        ///burgomastership
+        ///olympia
+        ///finance
+        ///exoticness
+        ///industrializing
+        ///riverbank
+        ///baas
+        ///disannulment
+        ///preaffiliation
+        ///alluringly
+        ///nonprocuration
+        ///restudied
+        ///evulsion
+        ///yahve
+        ///irretentive
+        ///anemotaxis
+        ///gangliest
+        ///tintinnabulation
+        ///alone
+        ///acadie
+        ///geosynclinal
+        ///batista
+        ///subshaft
+        ///egesta
+        ///conflictingly
+        ///fandangle
+        ///unenclosed
+        ///song [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string RandomWords {
+            get {
+                return ResourceManager.GetString("RandomWords", resourceCulture);
             }
         }
     }

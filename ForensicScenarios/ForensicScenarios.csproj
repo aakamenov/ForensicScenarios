@@ -69,11 +69,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrap.cs" />
+    <Compile Include="Events\ScenarioCompleted.cs" />
+    <Compile Include="Scenarios\DESEncryption.cs" />
     <Compile Include="Scenarios\IScenario.cs" />
     <Compile Include="Scenarios\ReverseShell.cs" />
     <Compile Include="Scenarios\Screenshot1.cs" />
     <Compile Include="Scenarios\Screenshot2.cs" />
     <Compile Include="Scenarios\Shellbag.cs" />
+    <Compile Include="Tools\ProcessService.cs" />
     <Compile Include="Tools\ScreenCapture.cs" />
     <Compile Include="Tools\TabContent.cs" />
     <Compile Include="Tools\Wait.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="ViewModels\ScenarioCategoryViewModel.cs" />
     <Compile Include="ViewModels\ScreenshotScenarioViewModel.cs" />
     <Compile Include="ViewModels\ShellbagScenarioViewModel.cs" />
+    <Compile Include="ViewModels\TextFieldPromptViewModel.cs" />
     <Compile Include="Views\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
@@ -90,7 +94,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\TextFieldPromptView.xaml.cs">
+      <DependentUpon>TextFieldPromptView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\MainWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TextFieldPromptView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,13 +7,12 @@ using ForensicScenarios.Scenarios;
 
 namespace ForensicScenarios.ViewModels
 {
-    class ReverseShellViewModel : ScenarioCategoryViewModel
+    public class ReverseShellViewModel : ScenarioCategoryViewModel
     {
-        protected override void Initialize()
+        public ReverseShellViewModel(ReverseShell reverseShell) : base()
         {
-            DisplayName = "Reverse Shell";
-
-            Scenarios.Add(new ReverseShell());
+            DisplayName = "Reverse shell";
+            Scenarios.Add(reverseShell);
         }
     }
 }

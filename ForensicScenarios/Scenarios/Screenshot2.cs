@@ -2,8 +2,10 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using ForensicScenarios.Tools;
+using ForensicScenarios.Events;
 
 namespace ForensicScenarios.Scenarios
 {
@@ -21,22 +23,25 @@ namespace ForensicScenarios.Scenarios
             }
         }
 
-        public int StatusValue
+        public bool IsSelected
         {
-            get => statusValue;
-            private set
+            get => isSelected;
+            set
             {
-                statusValue = value;
-                NotifyOfPropertyChange(nameof(StatusValue));
+                isSelected = value;
+                NotifyOfPropertyChange(nameof(IsSelected));
             }
         }
 
-        private const string NAME = "Screenshot 2"; //Used to control the text displayed in the listbox
+        private bool isSelected;
         private string status;
-        private int statusValue;
 
-        public Screenshot2()
+        private const string NAME = "Screenshot 2"; //Used to control the text displayed in the listbox
+        private readonly IEventAggregator eventAggregator;
+
+        public Screenshot2(IEventAggregator aggregator)
         {
+            eventAggregator = aggregator;
             Description = "The Screenshot Scenario 2\n\nThis Screenshot scenario will take number of screenshots of the active window and the whole screen with the bot minimised and momentarily save the file to the desktop.\n\nThese files will then be renamed, have their extensions changed and be moved to various folders on your hard drive.";
         }
 
@@ -56,7 +61,7 @@ namespace ForensicScenarios.Scenarios
             ClrPrevious(dstpath2, str2);
             CreateFile(srcpath, dstpath2, str2);
 
-            StatusValue = 2000;
+            eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
         }
 
         public override string ToString()
@@ -73,10 +78,7 @@ namespace ForensicScenarios.Scenarios
                 {
                     File.Delete(path);
                     Status = "Removing previous files...✔\n";
-                    StatusValue = 2000;
                 }
-                else
-                    StatusValue = 2000;
             }
             catch
             {
@@ -97,8 +99,6 @@ namespace ForensicScenarios.Scenarios
 
                 Status = "Moving file to a new location...✔\n";
                 File.Move(str2, dstpath + newfilename);
-
-                StatusValue = 2000;
             }
             catch (Exception)
             {

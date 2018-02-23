@@ -4,17 +4,13 @@ using ForensicScenarios.Scenarios;
 
 namespace ForensicScenarios.ViewModels
 {
-    public abstract class ScenarioCategoryViewModel : Screen
+    public abstract class ScenarioCategoryViewModel : Screen, IChild
     {
         public ObservableCollection<IScenario> Scenarios { get; set; }
 
         public ScenarioCategoryViewModel()
         {
-            Scenarios = new ObservableCollection<IScenario>();
-
-            Initialize();
+            Scenarios = new ObservableCollection<IScenario>();         
         }
-
-        protected abstract void Initialize();
     }
 }

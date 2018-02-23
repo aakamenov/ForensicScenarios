@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.ComponentModel;
 using Caliburn.Micro;
 using ForensicScenarios.Scenarios;
+using ForensicScenarios.Tools;
+using ForensicScenarios.Events;
 
 namespace ForensicScenarios.ViewModels
 {
-    public class MainWindowViewModel : Conductor<ScenarioCategoryViewModel>.Collection.OneActive
+    public class MainWindowViewModel : Conductor<ScenarioCategoryViewModel>.Collection.OneActive,
+        IHandle<ScenarioCompleted>
     {
         public ObservableCollection<IScenario> SelectedScenarios { get; set; }
 
@@ -38,21 +43,34 @@ namespace ForensicScenarios.ViewModels
 
         public bool CanRunScenarios => SelectedScenarios.Count > 0;
 
+        public bool TabControlEnabled => runningScenarioCount == 0;
+
         private ScenarioCategoryViewModel selectedTab;
         private string scenarioDescription;
-        private readonly int totalScenarioCount;
+        private int runningScenarioCount;
 
-        public MainWindowViewModel()
+        private readonly int totalScenarioCount;
+        private readonly IEventAggregator eventAggregator;
+
+        public MainWindowViewModel(
+            IEventAggregator aggregator,
+            ShellbagScenarioViewModel shellbag,
+            EncryptionScenarioViewModel encryption, 
+            ScreenshotScenarioViewModel screenshot,
+            ReverseShellViewModel reverseShell)
         {
-            Items.Add(new ShellbagScenarioViewModel());
-            Items.Add(new EncryptionScenarioViewModel());
-            Items.Add(new ScreenshotScenarioViewModel());
-            Items.Add(new ReverseShellViewModel());
+            Items.Add(shellbag);
+            Items.Add(encryption);
+            Items.Add(screenshot);
+            Items.Add(reverseShell);
 
             totalScenarioCount = Items.Select(x => x.Scenarios.Count).Sum(); 
 
             SelectedTab = Items.FirstOrDefault();
             SelectedScenarios = new ObservableCollection<IScenario>();
+
+            eventAggregator = aggregator;
+            eventAggregator.Subscribe(this);
         }
 
         public void ShowDescription(ListView a)
@@ -77,7 +95,15 @@ namespace ForensicScenarios.ViewModels
 
         public void RunScenarios()
         {
-            SelectedScenarios.Apply(x => x.Run());
+            runningScenarioCount = SelectedScenarios.Count;
+            NotifyOfPropertyChange(nameof(TabControlEnabled));
+
+            //https://stackoverflow.com/questions/2329978/the-calling-thread-must-be-sta-because-many-ui-components-require-this
+            SelectedScenarios.Apply(async x => 
+                                    await Application.Current.Dispatcher.InvokeAsync(new System.Action(x.Run)));
+
+            NotifyOfPropertyChange(nameof(RunScenariosButtonText));
+            NotifyOfPropertyChange(nameof(CanRunScenarios));
         }
 
         public void SelectionChanged(SelectionChangedEventArgs e)
@@ -90,6 +116,38 @@ namespace ForensicScenarios.ViewModels
 
             NotifyOfPropertyChange(nameof(RunScenariosButtonText));
             NotifyOfPropertyChange(nameof(CanRunScenarios));
+        }
+
+        public void OnClosing(CancelEventArgs e)
+        {
+            if (!TabControlEnabled)
+            {
+                var message = $"You have {runningScenarioCount} scenarios currently running.\nExit anyway?";
+
+                var result = MessageBox.Show(message, "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.No)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+            ProcessService.KillAll();
+        }
+
+        public void Handle(ScenarioCompleted message)
+        {
+            runningScenarioCount--;
+            message.CompletedScenario.IsSelected = false;
+
+            if (runningScenarioCount == 0)
+                NotifyOfPropertyChange(nameof(TabControlEnabled));
+        }
+
+        public void Exit()
+        {
+            Application.Current.MainWindow.Close();
         }
     }
 }

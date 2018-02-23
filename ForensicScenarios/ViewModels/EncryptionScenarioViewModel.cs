@@ -4,9 +4,11 @@ namespace ForensicScenarios.ViewModels
 {
     public class EncryptionScenarioViewModel : ScenarioCategoryViewModel
     {
-        protected override void Initialize()
+        public EncryptionScenarioViewModel(DESEncryption desEncryption) : base()
         {
             DisplayName = "Encryption";
+
+            Scenarios.Add(desEncryption);
         }
     }
 }

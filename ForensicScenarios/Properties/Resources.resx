@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,353 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Passwords" xml:space="preserve">
+    <value>abrupt
+blood
+kill
+embarrassed
+amusing
+attract
+group
+include
+scattered
+white
+tramp
+bad
+efficient
+books
+tumble
+terrific
+airplane
+trees
+helpful
+stingy
+cheerful
+ants
+zippy
+fuzzy
+naive
+print
+slope
+dysfunctional
+normal
+subtract
+daily
+children
+pump
+eyes
+internal
+measure
+nauseating
+refuse
+note
+stain
+ticket
+bright
+improve
+gifted
+fish
+pathetic
+vengeful
+claim
+romantic
+flower
+toes
+quiet
+cautious
+thaw
+lush
+color
+number
+property
+powerful
+carpenter
+silk
+pan
+eggnog
+window
+greasy
+story
+fence
+camp
+wrestle
+live
+jam
+rural
+silver
+company
+show
+water
+design
+correct
+efficacious
+rainstorm
+auspicious
+guess
+cherries
+waves
+cast
+deserted
+inject
+toys
+reply
+shame
+puffy
+moor
+rare
+mouth
+wicked
+examine
+pot
+surprise
+twist
+poised
+hypnoanalytic
+salvable
+cacothes
+deceptive
+subterrene
+unanalogized
+libeler
+brahmani
+unproposable
+sorrow
+polypeptide
+corruptedness
+pinite
+boiling
+implicitly
+inculcated
+isothermobath
+unmeasured
+malvasia
+universe
+galvanoplastic
+electrobiologist
+unbusinesslike
+id
+cadging
+rudderhead
+planetology
+revest
+manroot
+nondedicative
+uncommendable
+pluviometric
+unmental
+enouncement
+unfantastic
+gumming
+attackable
+ungratefulness
+ultrasonics
+sidestep</value>
+  </data>
+  <data name="RandomWords" xml:space="preserve">
+    <value>coldstream
+carious
+unharvested
+triplet
+steed
+lacunule
+jaws
+harp
+clustery
+trickily
+stereotyping
+pituitousness
+manukau
+elaborator
+sublibrarianship
+cobbett
+specifier
+bipyramidal
+burgomastership
+olympia
+finance
+exoticness
+industrializing
+riverbank
+baas
+disannulment
+preaffiliation
+alluringly
+nonprocuration
+restudied
+evulsion
+yahve
+irretentive
+anemotaxis
+gangliest
+tintinnabulation
+alone
+acadie
+geosynclinal
+batista
+subshaft
+egesta
+conflictingly
+fandangle
+unenclosed
+songfully
+indiscernible
+haybox
+grampuses
+subrectal
+saltishness
+redwing
+connectional
+saguenay
+cremate
+omnificent
+logship
+mayfly
+pedagoaling
+wicking
+abrupt
+blood
+kill
+embarrassed
+amusing
+attract
+group
+include
+scattered
+white
+tramp
+bad
+efficient
+books
+tumble
+terrific
+airplane
+trees
+helpful
+stingy
+cheerful
+ants
+zippy
+fuzzy
+naive
+print
+slope
+dysfunctional
+normal
+subtract
+daily
+children
+pump
+eyes
+internal
+measure
+nauseating
+refuse
+note
+stain
+ticket
+bright
+improve
+gifted
+fish
+pathetic
+vengeful
+claim
+romantic
+flower
+toes
+quiet
+cautious
+thaw
+lush
+color
+number
+property
+powerful
+carpenter
+silk
+pan
+eggnog
+window
+greasy
+story
+fence
+camp
+wrestle
+live
+jam
+rural
+silver
+company
+show
+water
+design
+correct
+efficacious
+rainstorm
+auspicious
+guess
+cherries
+waves
+cast
+deserted
+inject
+toys
+reply
+shame
+puffy
+moor
+rare
+mouth
+wicked
+examine
+pot
+surprise
+twist
+poised
+hypnoanalytic
+salvable
+cacothes
+deceptive
+subterrene
+unanalogized
+libeler
+brahmani
+unproposable
+sorrow
+polypeptide
+corruptedness
+pinite
+boiling
+implicitly
+inculcated
+isothermobath
+unmeasured
+malvasia
+universe
+galvanoplastic
+electrobiologist
+unbusinesslike
+id
+cadging
+rudderhead
+planetology
+revest
+manroot
+nondedicative
+uncommendable
+pluviometric
+unmental
+enouncement
+unfantastic
+gumming
+attackable
+ungratefulness
+ultrasonics
+sidestep</value>
+  </data>
 </root>
