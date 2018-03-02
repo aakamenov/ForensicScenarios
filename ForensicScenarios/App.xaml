@@ -9,6 +9,341 @@
                     <local:Bootstrap x:Key="Bootstrap" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type Window}" x:Key="FS-Window">
+                <Setter Property="Background" Value="#1b1b1e"/>
+            </Style>
+
+            <Style TargetType="{x:Type Button}" x:Key="FS-Button">
+                <Setter Property="Background" Value="#373f51" />
+                <Setter Property="Foreground" Value="#d8dbe2" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="ButtonBorder" BorderThickness="3" Padding="{TemplateBinding Padding}" BorderBrush="#a9bcd0" CornerRadius="8" Background="{TemplateBinding Background}">
+                                <Grid>
+                                    <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#a9bcd0" />
+                                    <Setter Property="Foreground" Value="#1b1b1e" />
+                                </Trigger>
+
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#373f51"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="#373f51"/>
+                                </Trigger>
+
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#58a4b0" />
+                                    <Setter Property="Foreground" Value="#1b1b1e" />
+                                </Trigger>
+                                
+                            </ControlTemplate.Triggers>
+                            
+                        </ControlTemplate>
+                        
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+            <!-- Has to be above TabControl -->
+            <Style x:Key="CustomFVS" >
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Border x:Name="FocusStyle" Background="#4433b4ed" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type TabControl}" x:Key="FS-TabControl">
+                <Setter Property="OverridesDefaultStyle" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabControl}">
+                            <Grid KeyboardNavigation.TabNavigation="Local">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TabPanel x:Name="HeaderPanel"
+                                    Grid.Row="0"
+                                    Panel.ZIndex="1"
+                                    Margin="0,0,4,-1"
+                                    IsItemsHost="True"
+                                    KeyboardNavigation.TabIndex="1"
+                                    Background="Transparent" />
+
+                                <Border
+                                    Name="TabControlBorder"
+                                    Grid.Row="1"
+                                    BorderThickness="3"
+                                    KeyboardNavigation.TabNavigation="Local"
+                                    KeyboardNavigation.DirectionalNavigation="Contained"
+                                    KeyboardNavigation.TabIndex="2"
+                                    BorderBrush="#a9bcd0">
+
+                                    <ContentPresenter x:Name="PART_SelectedContentHost" Margin="4" ContentSource="SelectedContent"/>
+
+                                </Border>
+
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="ContentControl.Background" Value="Red"/>
+                                    <Setter Property="BorderBrush" TargetName="TabControlBorder" Value="#373f51"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type TabItem}" x:Key="FS-TabItem">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="#d8dbe2"/>
+                <Setter Property="FocusVisualStyle" Value="{StaticResource CustomFVS}" />
+                
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabItem}">
+                            <ControlTemplate.Resources>
+                                <Storyboard x:Key="StartAction">
+                                    <DoubleAnimation Storyboard.TargetName="Border1Highlited" Storyboard.TargetProperty="(UIElement.Opacity)" From="0" To="1" Duration="0:0:0.5"/>
+                                </Storyboard>
+
+                                <Storyboard x:Key="ExitAction">
+                                    <DoubleAnimation Storyboard.TargetName="Border1Highlited" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.3" />
+                                </Storyboard>
+                            </ControlTemplate.Resources>
+
+                            <Grid x:Name="Root">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="1" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="6" />
+                                    <RowDefinition Height="2" />
+                                </Grid.RowDefinitions>
+
+                                <Border x:Name="TabItemBorder"  Margin="0,0,-1,0" Background="#373f51">
+                                    <ContentPresenter x:Name="ContentSite"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          ContentSource="Header"
+                                          Margin="30,10,30,4"
+                                          RecognizesAccessKey="True"/>
+                                </Border>
+                                <Border x:Name="SideBorder" Grid.Column="1" Margin="0,10,0,4" Background="#a9bcd0" />
+
+                                <Border Grid.Row="1" Grid.ColumnSpan="2" Name="BorderUnselected" Background="#a9bcd0"/>
+                                <Border Grid.Row="1" Grid.ColumnSpan="2" Name="Border1Highlited" Background="Transparent"/>
+
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Panel.ZIndex" Value="100" />
+                                    <Setter TargetName="Border1Highlited" Property="Background" Value="#58a4b0" />
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource StartAction}"/>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard Storyboard="{StaticResource ExitAction}"/>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="BorderUnselected" Property="Background" Value="#373f51" />
+                                    <Setter Property="Foreground" Value="#373f51" />
+                                    <Setter TargetName="TabItemBorder" Property="Background" Value="Transparent"/>
+                                    <Setter TargetName="SideBorder" Property="Background" Value="#373f51"/>
+                                </Trigger>
+
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSelected" Value="True"/>
+                                        <Condition Property="IsEnabled" Value="False"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border1Highlited" Property="Background" Value="#2c5359" />
+                                </MultiTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type TextBox}" x:Key="FS-TextBox">
+                <Setter Property="Background" Value="#373f51" />
+                <Setter Property="Foreground" Value="#d8dbe2" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border x:Name="BoxBorder" BorderThickness="1" BorderBrush="#373f51" CornerRadius="8" Background="{TemplateBinding Background}">
+                                <Grid>
+                                    <TextBlock Text="{TemplateBinding Text}" Margin="5 5 5 5" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="BoxBorder" Property="BorderBrush" Value="#a9bcd0"/>
+                                </Trigger>
+
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter TargetName="BoxBorder" Property="BorderBrush" Value="#a9bcd0"/>
+                                </Trigger>
+
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="#a9bcd0"/>
+                                </Trigger>
+
+                            </ControlTemplate.Triggers>
+
+                        </ControlTemplate>
+
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type TextBox}" x:Key="FS-TextBox-Readonly">
+                <Setter Property="Background" Value="#373f51" />
+                <Setter Property="Foreground" Value="#d8dbe2" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="IsReadOnly" Value="True" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border x:Name="BoxBorder" BorderThickness="1" BorderBrush="#373f51" CornerRadius="8" Background="{TemplateBinding Background}">
+                                <Grid>
+                                    <TextBlock Text="{TemplateBinding Text}" Margin="5 5 5 5" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="#a9bcd0"/>
+                                </Trigger>
+
+                            </ControlTemplate.Triggers>
+
+                        </ControlTemplate>
+
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type Label}" x:Key="FS-Label">
+                <Setter Property="Foreground" Value="#a9bcd0" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="FontWeight" Value="Bold"/>
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        
+                        <ControlTemplate TargetType="{x:Type Label}">
+                            <Grid>
+                                <TextBlock Text="{TemplateBinding Content}" Padding="5 5 5 5" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                            </Grid>
+                        </ControlTemplate>
+
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type ListView}" x:Key="FS-ListView">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Border.BorderBrush" Value="Transparent"/>
+                        <Setter Property="Border.Background" Value="Transparent"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type ListViewItem}" x:Key="FS-ListViewItem">
+                <Setter Property="Background" Value="#373f51"/>
+                <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                            <Border
+                                x:Name="ListItemBorder"
+                                BorderBrush="#a9bcd0"
+                                BorderThickness="1"
+                                CornerRadius="8"   
+                                Background="#373f51"
+                                Padding="5 5 5 5"
+                                Margin="0 0 0 5">
+
+                                <TextBlock x:Name="ListItemText" FontSize="15" Text="{Binding Name}" Foreground="#d8dbe2"/>
+
+                            </Border>
+
+                            <ControlTemplate.Triggers>
+
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="ListItemBorder" Property="Background" Value="#a9bcd0"/>
+                                    <Setter Property="Background" Value="#a9bcd0" />
+                                    <Setter TargetName="ListItemText" Property="Foreground" Value="#1b1b1e" />
+                                </Trigger>
+
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="ListItemBorder" Property="BorderBrush" Value="#373f51"/>
+                                    <Setter TargetName="ListItemBorder" Property="Background" Value="#1b1b1e"/>
+                                    <Setter TargetName="ListItemText" Property="Foreground" Value="#373f51"/>
+                                </Trigger>
+
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="ListItemBorder" Property="Background" Value="#a9bcd0"/>
+                                    <Setter Property="Background" Value="#a9bcd0" />
+                                    <Setter TargetName="ListItemText" Property="Foreground" Value="#1b1b1e" />
+                                </Trigger>
+
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSelected" Value="True"/>
+                                        <Condition Property="IsEnabled" Value="False"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="ListItemBorder" Property="Background" Value="#373f51"/>
+                                    <Setter TargetName="ListItemText" Property="Foreground" Value="#1b1b1e" />
+                                </MultiTrigger>
+
+                            </ControlTemplate.Triggers>
+
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

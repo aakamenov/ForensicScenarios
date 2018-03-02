@@ -14,6 +14,8 @@ namespace ForensicScenarios.Scenarios
 {
     public class DESEncryption : PropertyChangedBase, IScenario
     {
+        public string Name => "DES Encryption";
+
         public string Description { get; set; }
 
         public string Status
@@ -41,7 +43,6 @@ namespace ForensicScenarios.Scenarios
         private string[] passwords;
         private string currentPassword;
 
-        private const string NAME = "DES Decryption"; //Used to control the text displayed in the listbox
         private const string FILENAME = "\\example.txt";
         private const string FILENAME_ENCRYPTED = "\\example.encrypted.txt";
         private readonly string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\ForensicBot\\DESEncryption";
@@ -58,7 +59,7 @@ namespace ForensicScenarios.Scenarios
             windowManager = manager;
             eventAggregator = aggregator;
 
-            Description = "The DES Encryption Scenario\nThe Data Encryption Standard (DES) is an outdated symmetric-key method of data encryption. It works by using the same key to encrypt and decrypt a message, so both the sender and the receiver must know and use the same private key. Replaced by more secure Advanced Encryption Standard (AES) algorithm.\nThis will create a folder in the forensic bot folder on your desktop. Within this folder, a plain text file will be created. This file will then be encrypted using a password.";
+            Description = "The DES Encryption Scenario\n\nThe Data Encryption Standard (DES) is an outdated symmetric-key method of data encryption. It works by using the same key to encrypt and decrypt a message, so both the sender and the receiver must know and use the same private key. Replaced by more secure Advanced Encryption Standard (AES) algorithm.\nThis will create a folder in the forensic bot folder on your desktop. Within this folder, a plain text file will be created. This file will then be encrypted using a password.";
 
             SetupPrompt();
         }
@@ -75,14 +76,10 @@ namespace ForensicScenarios.Scenarios
             CreateFolderFile();
             EncryptFile();
 
-            File.Delete(path + FILENAME);
+            if(File.Exists(path + FILENAME))
+                File.Delete(path + FILENAME);
 
             windowManager.ShowWindow(prompt);
-        }
-
-        public override string ToString()
-        {
-            return NAME;
         }
 
         private void PromptDeactivated(object sender, DeactivationEventArgs e)
@@ -106,7 +103,7 @@ namespace ForensicScenarios.Scenarios
 
         private void SetupPrompt()
         {
-            prompt.Title = NAME;
+            prompt.Title = Name;
             prompt.Label = "Enter the cracked password below:";
             prompt.ButtonText = "Submit";
 

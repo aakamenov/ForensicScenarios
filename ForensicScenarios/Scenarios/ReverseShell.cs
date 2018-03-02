@@ -10,9 +10,11 @@ namespace ForensicScenarios.Scenarios
 {
     public class ReverseShell : PropertyChangedBase, IScenario
     {
+        public string Name => "Reverse Shell";
+
         public string Description { get; set; }
 
-        public string Status => throw new NotImplementedException();
+        public string Status => string.Empty;
 
         public bool IsSelected
         {
@@ -27,7 +29,6 @@ namespace ForensicScenarios.Scenarios
         private bool isSelected;
         private int exitCount;
 
-        private const string NAME = "Reverse Shell";
         private readonly IEventAggregator eventAggregator;
 
         public ReverseShell(IEventAggregator aggregator)
@@ -66,11 +67,6 @@ namespace ForensicScenarios.Scenarios
                 exitCount = 0;
                 eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
             }
-        }
-
-        public override string ToString()
-        {
-            return NAME;
         }
     }
 }

@@ -70,6 +70,7 @@
     </ApplicationDefinition>
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Events\ScenarioCompleted.cs" />
+    <Compile Include="Scenarios\AESEncryption.cs" />
     <Compile Include="Scenarios\DESEncryption.cs" />
     <Compile Include="Scenarios\IScenario.cs" />
     <Compile Include="Scenarios\ReverseShell.cs" />

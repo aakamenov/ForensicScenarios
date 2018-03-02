@@ -10,6 +10,8 @@ namespace ForensicScenarios.Scenarios
 {
     public class Shellbag : PropertyChangedBase, IScenario
     {
+        public string Name => "Shellbag";
+
         public string Description { get; set; }
 
         public string Status
@@ -35,7 +37,6 @@ namespace ForensicScenarios.Scenarios
         private bool isSelected;
         private string status;
 
-        private const string NAME = "Shellbags"; //Used to control the text displayed in the listbox
         private readonly IEventAggregator eventAggregator;
 
         public Shellbag(IEventAggregator aggregator)
@@ -71,11 +72,6 @@ namespace ForensicScenarios.Scenarios
             DeleteFile("\\" + s1 + "\\", "*.txt");
 
             eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
-        }
-
-        public override string ToString()
-        {
-            return NAME;
         }
 
         private void ClrPrevious(string path)

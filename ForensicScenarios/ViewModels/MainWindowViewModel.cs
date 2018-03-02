@@ -75,7 +75,7 @@ namespace ForensicScenarios.ViewModels
 
         public void ShowDescription(ListView a)
         {
-            var item = VisualTreeHelper.HitTest(a, Mouse.GetPosition(a)).VisualHit;
+            var item = VisualTreeHelper.HitTest(a, Mouse.GetPosition(a))?.VisualHit;
 
             while (item != null && !(item is ListViewItem))
                 item = VisualTreeHelper.GetParent(item);
@@ -120,7 +120,7 @@ namespace ForensicScenarios.ViewModels
 
         public void OnClosing(CancelEventArgs e)
         {
-            if (!TabControlEnabled)
+            if (!TabControlEnabled) //Check if scenarios are in progress
             {
                 var message = $"You have {runningScenarioCount} scenarios currently running.\nExit anyway?";
 

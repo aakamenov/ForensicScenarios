@@ -8,53 +8,63 @@
         xmlns:local="clr-namespace:ForensicScenarios.Views"
         xmlns:ikriv="clr-namespace:IKriv.Windows.Controls.Behaviors"
         mc:Ignorable="d"
+        Style="{StaticResource FS-Window}"
         Title="Forensic Scenarios" 
         Height="580" Width="700"
         MinHeight="580" MinWidth="700"
         cal:Message.Attach="[Event Closing] = [Action OnClosing($eventArgs)]">
+
+    <Window.Resources>
+        <Style TargetType="ScrollViewer">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#1b1b1e"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     
     <Grid Margin="20 20 20 0">
-        
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="6*"/>
             <RowDefinition Height="4*"/>
+            <RowDefinition Height="6*"/>
         </Grid.RowDefinitions>
 
-        <TabControl Grid.Row="0" Name="Items" SelectedItem="{Binding SelectedTab}" IsEnabled="{Binding TabControlEnabled}" ikriv:TabContent.IsCached="True">
+        <TabControl 
+            Grid.Row="0" 
+            Name="Items" 
+            SelectedItem="{Binding SelectedTab}" 
+            IsEnabled="{Binding TabControlEnabled}" 
+            ikriv:TabContent.IsCached="True"
+            Style="{StaticResource FS-TabControl}"
+            ItemContainerStyle="{StaticResource FS-TabItem}">
+
             <ikriv:TabContent.Template>
                 <DataTemplate>
-                    
-                    <StackPanel>
 
-                        <ListView cal:Message.Attach="[Event MouseMove] = [Action ShowDescription($source)];
-                                                      [Event MouseLeave] = [Action EmptyDescription];
-                                                      [Event SelectionChanged] = [Action SelectionChanged($eventArgs)];"
+                    <ListView cal:Message.Attach="[Event MouseMove] = [Action ShowDescription($source)];
+                                                  [Event MouseLeave] = [Action EmptyDescription];
+                                                  [Event SelectionChanged] = [Action SelectionChanged($eventArgs)];"
                                   ItemsSource="{Binding Scenarios}"  
-                                  SelectionMode="Multiple">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                        </ListView>
+                                  SelectionMode="Multiple"
+                                  Style="{StaticResource FS-ListView}"
+                                  ItemContainerStyle="{StaticResource FS-ListViewItem}"/>
 
-                    </StackPanel>
-                    
                 </DataTemplate>
             </ikriv:TabContent.Template>
         </TabControl>
 
         <Grid Grid.Row="1" Margin="0 10 0 0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="6*"/>
-                <RowDefinition Height="4*"/>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
 
             <TextBox Grid.Row="0" 
                      Text="{Binding ScenarioDescription}" 
-                     IsReadOnly="True" Margin="0 0 0 0" 
-                     TextWrapping="Wrap" 
-                     VerticalScrollBarVisibility="Auto"/>
+                     Style="{StaticResource FS-TextBox-Readonly}"/>
             
             <Grid Grid.Row="1">
                 
@@ -67,14 +77,20 @@
                 <Button Grid.Row="1" Grid.Column="0" 
                         Content="Exit" 
                         Margin="35 20 35 20"
-                        cal:Message.Attach="Exit"/>
+                        cal:Message.Attach="Exit"
+                        Style="{StaticResource FS-Button}"/>
                 
-                <Button Grid.Row="1" Grid.Column="1" Content="Help" Margin="35 20 35 20"/>
+                <Button Grid.Row="1" 
+                        Grid.Column="1" 
+                        Content="Help" 
+                        Margin="35 20 35 20"
+                        Style="{StaticResource FS-Button}"/>
                 
                 <Button Grid.Row="1" Grid.Column="2" 
                         cal:Message.Attach="RunScenarios"
                         Content="{Binding RunScenariosButtonText}"                         
-                        Margin="35 20 35 20"/>
+                        Margin="35 20 35 20"
+                        Style="{StaticResource FS-Button}"/>
             </Grid>
         </Grid>
     </Grid>

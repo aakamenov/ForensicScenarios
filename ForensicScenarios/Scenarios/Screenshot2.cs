@@ -11,6 +11,8 @@ namespace ForensicScenarios.Scenarios
 {
     public class Screenshot2 : PropertyChangedBase, IScenario
     {
+        public string Name => "Screenshot 1";
+
         public string Description { get; set; }
 
         public string Status
@@ -36,7 +38,6 @@ namespace ForensicScenarios.Scenarios
         private bool isSelected;
         private string status;
 
-        private const string NAME = "Screenshot 2"; //Used to control the text displayed in the listbox
         private readonly IEventAggregator eventAggregator;
 
         public Screenshot2(IEventAggregator aggregator)
@@ -62,11 +63,6 @@ namespace ForensicScenarios.Scenarios
             CreateFile(srcpath, dstpath2, str2);
 
             eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
-        }
-
-        public override string ToString()
-        {
-            return NAME;
         }
 
         private void ClrPrevious(string dstpath, string renmefle)

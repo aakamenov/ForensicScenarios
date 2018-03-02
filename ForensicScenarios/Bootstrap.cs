@@ -30,6 +30,7 @@ namespace ForensicScenarios
             container.PerRequest<ScreenshotScenarioViewModel>();
             container.PerRequest<TextFieldPromptViewModel>();
 
+            container.PerRequest<AESEncryption>();
             container.PerRequest<DESEncryption>();
             container.PerRequest<ReverseShell>();
             container.PerRequest<Screenshot1>();
