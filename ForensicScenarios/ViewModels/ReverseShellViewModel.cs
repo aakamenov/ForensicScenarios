@@ -9,10 +9,11 @@ namespace ForensicScenarios.ViewModels
 {
     public class ReverseShellViewModel : ScenarioCategoryViewModel
     {
-        public ReverseShellViewModel(ReverseShell reverseShell) : base()
+        public ReverseShellViewModel(ReverseShell reverseShell, SQLInjection sqlInjection) : base()
         {
             DisplayName = "Reverse shell";
             Scenarios.Add(reverseShell);
+            Scenarios.Add(sqlInjection);
         }
     }
 }

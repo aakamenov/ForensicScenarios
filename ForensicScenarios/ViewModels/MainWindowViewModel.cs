@@ -15,7 +15,8 @@ using ForensicScenarios.Events;
 namespace ForensicScenarios.ViewModels
 {
     public class MainWindowViewModel : Conductor<ScenarioCategoryViewModel>.Collection.OneActive,
-        IHandle<ScenarioCompleted>
+        IHandle<ScenarioCompleted>,
+        IHandle<ScenarioStatusUpdated>
     {
         public ObservableCollection<IScenario> SelectedScenarios { get; set; }
 
@@ -39,15 +40,38 @@ namespace ForensicScenarios.ViewModels
             }
         }
 
+        public string ScenarioOutput
+        {
+            get => scenarioOutput;
+            set
+            {
+                scenarioOutput = value;
+                NotifyOfPropertyChange(nameof(ScenarioOutput));
+            }
+        }
+
         public string RunScenariosButtonText => $"Run Scenarios\n({SelectedScenarios.Count}/{totalScenarioCount})";
 
-        public bool CanRunScenarios => SelectedScenarios.Count > 0;
+        public bool CanRunScenarios => SelectedScenarios.Count > 0 && IsRunning is false;
 
-        public bool TabControlEnabled => runningScenarioCount == 0;
+        public bool TabControlEnabled => !IsRunning;
+
+        public bool IsRunning
+        {
+            get => isRunning;
+            set
+            {
+                isRunning = value;
+                NotifyOfPropertyChange(nameof(IsRunning));
+                NotifyOfPropertyChange(nameof(CanRunScenarios));
+                NotifyOfPropertyChange(nameof(TabControlEnabled));
+            }
+        }
 
         private ScenarioCategoryViewModel selectedTab;
         private string scenarioDescription;
-        private int runningScenarioCount;
+        private string scenarioOutput;
+        private bool isRunning;
 
         private readonly int totalScenarioCount;
         private readonly IEventAggregator eventAggregator;
@@ -95,15 +119,16 @@ namespace ForensicScenarios.ViewModels
 
         public void RunScenarios()
         {
-            runningScenarioCount = SelectedScenarios.Count;
-            NotifyOfPropertyChange(nameof(TabControlEnabled));
+            IsRunning = true;
+            ScenarioOutput = string.Empty;
 
             //https://stackoverflow.com/questions/2329978/the-calling-thread-must-be-sta-because-many-ui-components-require-this
-            SelectedScenarios.Apply(async x => 
-                                    await Application.Current.Dispatcher.InvokeAsync(new System.Action(x.Run)));
-
-            NotifyOfPropertyChange(nameof(RunScenariosButtonText));
-            NotifyOfPropertyChange(nameof(CanRunScenarios));
+            //Application.Current.Dispatcher.InvokeAsync(RunInOrder);
+            var scenario = SelectedScenarios.First();
+            UpdateRunningInfo(scenario);
+            Application.Current.Dispatcher.InvokeAsync(scenario.Run);
+            //SelectedScenarios.Apply(async x => 
+            //                        await Application.Current.Dispatcher.InvokeAsync(new System.Action(x.Run)));
         }
 
         public void SelectionChanged(SelectionChangedEventArgs e)
@@ -120,9 +145,9 @@ namespace ForensicScenarios.ViewModels
 
         public void OnClosing(CancelEventArgs e)
         {
-            if (!TabControlEnabled) //Check if scenarios are in progress
+            if (IsRunning)
             {
-                var message = $"You have {runningScenarioCount} scenarios currently running.\nExit anyway?";
+                var message = $"You have {SelectedScenarios.Count} scenarios currently running.\nExit anyway?";
 
                 var result = MessageBox.Show(message, "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
@@ -138,16 +163,42 @@ namespace ForensicScenarios.ViewModels
 
         public void Handle(ScenarioCompleted message)
         {
-            runningScenarioCount--;
             message.CompletedScenario.IsSelected = false;
 
-            if (runningScenarioCount == 0)
-                NotifyOfPropertyChange(nameof(TabControlEnabled));
+            if(SelectedScenarios.Count > 0)
+            {
+                var scenario = SelectedScenarios.First();
+                UpdateRunningInfo(scenario);
+                Application.Current.Dispatcher.InvokeAsync(scenario.Run);
+            }
+            else
+            {
+                IsRunning = false;
+                EmptyDescription();
+            }
+        }
+
+        public void Handle(ScenarioStatusUpdated message)
+        {
+            ScenarioOutput += $"{message.StatusMessage}\n";
         }
 
         public void Exit()
         {
             Application.Current.MainWindow.Close();
+        }
+
+        private void UpdateRunningInfo(IScenario scenario)
+        {
+            ScenarioDescription = $"Currently running: {scenario.Name}\n";
+
+            if (SelectedScenarios.Count != 0)
+            {
+                var multiple = SelectedScenarios.Count > 1 ? "s" : string.Empty;
+                ScenarioDescription += $"{SelectedScenarios.Count} scenario{multiple} to go";
+            }
+
+            ScenarioOutput += $"\n{scenario.Name}:\n";
         }
     }
 }

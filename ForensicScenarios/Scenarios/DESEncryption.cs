@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Windows;
-using System.Diagnostics;
 using System.Security.Cryptography;
 using Caliburn.Micro;
 using ForensicScenarios.Events;
@@ -18,16 +17,6 @@ namespace ForensicScenarios.Scenarios
 
         public string Description { get; set; }
 
-        public string Status
-        {
-            get => status;
-            private set
-            {
-                status = value;
-                NotifyOfPropertyChange(nameof(Status));
-            }
-        }
-
         public bool IsSelected
         {
             get => isSelected;
@@ -39,7 +28,6 @@ namespace ForensicScenarios.Scenarios
         }
 
         private bool isSelected;
-        private string status;
         private string[] passwords;
         private string currentPassword;
 
@@ -60,12 +48,12 @@ namespace ForensicScenarios.Scenarios
             eventAggregator = aggregator;
 
             Description = "The DES Encryption Scenario\n\nThe Data Encryption Standard (DES) is an outdated symmetric-key method of data encryption. It works by using the same key to encrypt and decrypt a message, so both the sender and the receiver must know and use the same private key. Replaced by more secure Advanced Encryption Standard (AES) algorithm.\nThis will create a folder in the forensic bot folder on your desktop. Within this folder, a plain text file will be created. This file will then be encrypted using a password.";
-
-            SetupPrompt();
         }
 
         public void Run()
         {
+            SetupPrompt();
+
             if (passwords is null)
             {
                 passwords = Properties.Resources.Passwords.Split(new string[] { Environment.NewLine },
@@ -105,6 +93,7 @@ namespace ForensicScenarios.Scenarios
         {
             prompt.Title = Name;
             prompt.Label = "Enter the cracked password below:";
+            prompt.TextBoxContents = string.Empty;
             prompt.ButtonText = "Submit";
 
             prompt.Deactivated += PromptDeactivated;
@@ -113,18 +102,22 @@ namespace ForensicScenarios.Scenarios
 
         private void ClrPrevious()
         {
+            var msg = string.Empty;
+
             try
             {
                 if (Directory.Exists(path))
                 {
                     Directory.Delete(path, true);
-                    Status += "Removing previous files...✔\n";
+                    msg = "Removing previous files...✔";
                 }                
             }
             catch
             {
-                Status += "Removing previous files...✖\n";
+                msg = "Removing previous files...✖";
             }
+
+            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
         }
 
         public void CreateFile()
@@ -135,6 +128,8 @@ namespace ForensicScenarios.Scenarios
 
         public void CreateFolderFile()
         {
+            var msg = string.Empty;
+
             try
             {
 
@@ -143,18 +138,22 @@ namespace ForensicScenarios.Scenarios
                 using (StreamWriter text = File.CreateText(path + FILENAME))
                     text.WriteLine("This is an example text file. Now this file will be encrypted. Look at RAM > " + path + FILENAME);
 
-                Status += "Directory has been created...✔\n";
-                Status += "File with plain text was created...✔\n";
+                msg = "Directory has been created...✔\n";
+                msg += "File with plain text was created...✔";
             }
             catch(Exception)
             {
-                Status += "Directory has been created...✖\n";
-                Status += "File with plain text was created...✖\n";
+                msg = "Directory has been created...✖\n";
+                msg += "File with plain text was created...✖";
             }
+
+            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
         }
 
         public void EncryptFile()
         {
+            var msg = string.Empty;
+
             try
             {
                 var rnd = new Random();
@@ -163,12 +162,14 @@ namespace ForensicScenarios.Scenarios
 
                 Encrypt(path + FILENAME, path + FILENAME_ENCRYPTED, currentPassword);
 
-                Status += "File with encrypted text was created...✔\n";
+                msg = "File with encrypted text was created...✔";
             }
             catch(Exception)
             {
-                Status += "File with encrypted text was created...✖\n";
+                msg = "File with encrypted text was created...✖";
             }
+
+            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
         }
 
         public void Encrypt(string input, string output, string strHash)

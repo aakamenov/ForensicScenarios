@@ -14,16 +14,6 @@ namespace ForensicScenarios.Scenarios
 
         public string Description { get; set; }
 
-        public string Status
-        {
-            get => status;
-            private set
-            {
-                status = value;
-                NotifyOfPropertyChange(nameof(Status));
-            }
-        }
-
         public bool IsSelected
         {
             get => isSelected;
@@ -35,7 +25,6 @@ namespace ForensicScenarios.Scenarios
         }
 
         private bool isSelected;
-        private string status;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -78,88 +67,103 @@ namespace ForensicScenarios.Scenarios
         {
             if (Directory.Exists(path))
             {
+                var msg = string.Empty;
+
                 try
                 {
-                    Status = "Removing previous files...✔\n";
                     Directory.Delete(path, true);
+
+                    msg = "Removing previous files...✔";
                 }
                 catch (Exception)
                 {
-                    Status = "Removing previous files...✖\n";
+                    msg = "Removing previous files...✖";
                 }
+
+                eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
             }
         }
 
         private void DeleteFile(string f, string file)
         {
             string str = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\ForensicBot\\Shellbag";
+            var msg = string.Empty;
 
             try
             {
                 ExecuteCommandSync((object)("del  " + str + f + file));
-                Status = "File deleted...✔\n";
+
+                msg = "File deleted...✔";
             }
             catch (Exception)
             {
-                Status = "File deleted...✖\n";
+                msg = "File deleted...✖";
             }
+
+            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
         }
 
         private void MoveFile(string f, string d)
         {
             string str = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\ForensicBot\\Shellbag";
+            var msg = string.Empty;
 
             try
             {
                 ExecuteCommandSync((object)("move  " + str + f + " " + str + d));
-                Status = "File moved...✔\n";
+
+                msg = "File moved...✔";
             }
             catch (Exception)
             {
-                Status = "File moved...✖\n";
+                msg = "File moved...✖";
             }
+
+            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
         }
 
         private void CopyFile(string f, string d)
         {
             string str = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\ForensicBot\\Shellbag";
+            var msg = string.Empty;
 
             try
             {
                 ExecuteCommandSync((object)("copy  " + str + f + " " + str + d));
-                Status = "File Copied...✔\n";
+
+                msg = "File Copied...✔";
             }
             catch (Exception)
             {
-                Status = "File Copied...✖\n";
+                msg = "File Copied...✖";
             }
+
+            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
         }
 
         private void CreateFile(string t, string p, string f)
         {
             ExecuteCommandSync((object)("echo " + t + " >" + Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\ForensicBot\\" + p + f));
 
-            try
-            {
-                Status = "File " + f + " created...✔\n";
-            }
-            catch (Exception)
-            {
-                Status = "File " + f + " created...✖\n";
-            }
+            var msg = "File " + f + " created...✔";
+            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
         }
 
         private void CreateFolder(string path, string s)
         {
+            var msg = string.Empty;
+        
             try
             {
                 Directory.CreateDirectory(path + s);
-                Status = "Folder " + s + " created...✔\n";
+                msg = "Folder " + s + " created...✔";
             }
             catch (Exception)
             {
-                Status = "Folder " + s + " created...✖\n";
+                msg = "Folder " + s + " created...✖";
             }
+
+            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
         }
 
         private void ExecuteCommandSync(object command)

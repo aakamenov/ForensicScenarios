@@ -15,16 +15,6 @@ namespace ForensicScenarios.Scenarios
 
         public string Description { get; set; }
 
-        public string Status
-        {
-            get => status;
-            private set
-            {
-                status = value;
-                NotifyOfPropertyChange(nameof(Status));
-            }
-        }
-
         public bool IsSelected
         {
             get => isSelected;
@@ -36,7 +26,6 @@ namespace ForensicScenarios.Scenarios
         }
 
         private bool isSelected;
-        private string status;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -68,39 +57,47 @@ namespace ForensicScenarios.Scenarios
         private void ClrPrevious(string dstpath, string renmefle)
         {
             string path = dstpath + renmefle;
+            var msg = string.Empty;
+
             try
             {
                 if (File.Exists(path))
                 {
                     File.Delete(path);
-                    Status = "Removing previous files...✔\n";
+                    msg = "Removing previous files...✔";
                 }
             }
             catch
             {
-                Status = "Removing previous files...✖\n";
+                msg = "Removing previous files...✖";
             }
+
+            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
         }
 
         private void CreateFile(string srcpath, string dstpath, string newfilename)
         {
+            var msg = string.Empty;
+
             try
             {
                 string str1 = DateTime.Now.ToString("yyyyMMddHHmmss");
                 string str2 = srcpath + "image" + str1 + ".jpeg";
 
-                Status = "Capturing screenshot and saving to desktop...✔\n";
                 Image data = ScreenCapture.CaptureScreen();
                 data.Save(str2, ImageFormat.Jpeg);
+                msg = "Capturing screenshot and saving to desktop...✔\n";
 
-                Status = "Moving file to a new location...✔\n";
                 File.Move(str2, dstpath + newfilename);
+                msg += "Moving file to a new location...✔";
             }
             catch (Exception)
             {
-                Status = "Capturing screenshot and saving to desktop...✖\n";
-                Status = "Moving file to a new location...✖\n";
+                msg = "Capturing screenshot and saving to desktop...✖\n";
+                msg += "Moving file to a new location...✖";
             }
+
+            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
         }
     }
 }

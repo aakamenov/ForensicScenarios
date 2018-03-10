@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ForensicScenarios.Views"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        ResizeMode="NoResize"
+        ResizeMode="CanMinimize"
         Style="{StaticResource FS-Window}"
         Title="{Binding Title}" 
         Height="223" Width="320">

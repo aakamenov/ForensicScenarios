@@ -70,6 +70,7 @@
     </ApplicationDefinition>
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Events\ScenarioCompleted.cs" />
+    <Compile Include="Events\ScenarioStatusUpdated.cs" />
     <Compile Include="Scenarios\AESEncryption.cs" />
     <Compile Include="Scenarios\DESEncryption.cs" />
     <Compile Include="Scenarios\IScenario.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Scenarios\Screenshot1.cs" />
     <Compile Include="Scenarios\Screenshot2.cs" />
     <Compile Include="Scenarios\Shellbag.cs" />
+    <Compile Include="Scenarios\SQLInjection.cs" />
     <Compile Include="Tools\ProcessService.cs" />
     <Compile Include="Tools\ScreenCapture.cs" />
     <Compile Include="Tools\TabContent.cs" />

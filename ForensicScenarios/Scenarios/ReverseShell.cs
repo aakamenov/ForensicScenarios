@@ -14,8 +14,6 @@ namespace ForensicScenarios.Scenarios
 
         public string Description { get; set; }
 
-        public string Status => string.Empty;
-
         public bool IsSelected
         {
             get => isSelected;

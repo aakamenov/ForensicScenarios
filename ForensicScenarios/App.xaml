@@ -199,7 +199,9 @@
                         <ControlTemplate TargetType="{x:Type TextBox}">
                             <Border x:Name="BoxBorder" BorderThickness="1" BorderBrush="#373f51" CornerRadius="8" Background="{TemplateBinding Background}">
                                 <Grid>
-                                    <TextBlock Text="{TemplateBinding Text}" Margin="5 5 5 5" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                    <ScrollViewer>
+                                        <TextBlock Text="{TemplateBinding Text}" Margin="5 5 5 5" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                    </ScrollViewer>
                                 </Grid>
                             </Border>
 
@@ -238,7 +240,9 @@
                         <ControlTemplate TargetType="{x:Type TextBox}">
                             <Border x:Name="BoxBorder" BorderThickness="1" BorderBrush="#373f51" CornerRadius="8" Background="{TemplateBinding Background}">
                                 <Grid>
-                                    <TextBlock Text="{TemplateBinding Text}" Margin="5 5 5 5" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                    <ScrollViewer>
+                                        <TextBlock Text="{TemplateBinding Text}" Margin="5 5 5 5" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                    </ScrollViewer>
                                 </Grid>
                             </Border>
 

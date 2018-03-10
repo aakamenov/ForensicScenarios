@@ -39,6 +39,9 @@ namespace ForensicScenarios.Tools
         {
             foreach (var process in processes)
             {
+                if (process is null)
+                    continue;
+
                 process.Exited -= Process_Exited;
 
                 try

@@ -36,6 +36,7 @@ namespace ForensicScenarios
             container.PerRequest<Screenshot1>();
             container.PerRequest<Screenshot2>();
             container.PerRequest<Shellbag>();
+            container.PerRequest <SQLInjection>();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
