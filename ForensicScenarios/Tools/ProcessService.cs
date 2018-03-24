@@ -35,6 +35,25 @@ namespace ForensicScenarios.Tools
             return process;
         }
 
+        public static Process CreateProcess(string path, string arguments)
+        {
+            var processStartInfo = new ProcessStartInfo(path, arguments)
+            {
+                UseShellExecute = false
+            };
+
+            var process = new Process()
+            {
+                EnableRaisingEvents = true,
+                StartInfo = processStartInfo                
+            };
+
+            processes.Add(process);
+            process.Exited += Process_Exited;
+
+            return process;
+        }
+
         public static void KillAll()
         {
             foreach (var process in processes)

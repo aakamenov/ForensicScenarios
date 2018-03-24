@@ -26,7 +26,7 @@ namespace ForensicScenarios
             container.PerRequest<MainWindowViewModel>();
             container.PerRequest<ShellbagScenarioViewModel>();
             container.PerRequest<EncryptionScenarioViewModel>();
-            container.PerRequest<ReverseShellViewModel>();
+            container.PerRequest<InternetSecurityViewModel>();
             container.PerRequest<ScreenshotScenarioViewModel>();
             container.PerRequest<TextFieldPromptViewModel>();
 
@@ -36,7 +36,9 @@ namespace ForensicScenarios
             container.PerRequest<Screenshot1>();
             container.PerRequest<Screenshot2>();
             container.PerRequest<Shellbag>();
-            container.PerRequest <SQLInjection>();
+            container.PerRequest<SQLInjection>();
+            container.PerRequest<Browser>();
+            container.PerRequest<BrowserNavigation>();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)

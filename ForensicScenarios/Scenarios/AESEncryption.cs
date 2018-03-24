@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using Caliburn.Micro;
 using ForensicScenarios.Events;
 using ForensicScenarios.ViewModels;
+using ForensicScenarios.Tools;
 
 namespace ForensicScenarios.Scenarios
 {
@@ -28,7 +29,6 @@ namespace ForensicScenarios.Scenarios
         }
 
         private bool isSelected;
-        private string[] passwords;
         private string currentPassword;
 
         private const string FILENAME = "PlainText.txt";
@@ -54,12 +54,6 @@ namespace ForensicScenarios.Scenarios
         public void Run()
         {
             SetupPrompt();
-
-            if (passwords is null)
-            {
-                passwords = Properties.Resources.Passwords.Split(new string[] { Environment.NewLine },
-                                                                 StringSplitOptions.RemoveEmptyEntries);
-            }
 
             ClrPrevious();
             CreateFolder();
@@ -120,7 +114,7 @@ namespace ForensicScenarios.Scenarios
                 msg = "Removing previous files...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         public void CreateFolder()
@@ -138,7 +132,7 @@ namespace ForensicScenarios.Scenarios
                 msg = "Directory Created...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         private void PlainTextFile()
@@ -158,13 +152,13 @@ namespace ForensicScenarios.Scenarios
                 msg = "File with plain text was created...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         public void EncryptedTextFile()
         {
             var rnd = new Random();
-            currentPassword = passwords[rnd.Next(0, 9)];
+            currentPassword = ResourcesManager.GetRandomPassword();
 
             string fullPath = path + FILENAME_ENCRYPTED;
             string str = EncryptText(TEXT_INPUT, currentPassword);
@@ -182,7 +176,7 @@ namespace ForensicScenarios.Scenarios
                 msg = "File with encrypted text was created...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         private string EncryptText(string textinput, string password)
@@ -198,14 +192,14 @@ namespace ForensicScenarios.Scenarios
         {
             byte[] salt = new byte[8]
             {
-                (byte) 1,
-                (byte) 2,
-                (byte) 3,
-                (byte) 4,
-                (byte) 5,
-                (byte) 6,
-                (byte) 7,
-                (byte) 8
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
             };
 
             using (MemoryStream memoryStream = new MemoryStream())

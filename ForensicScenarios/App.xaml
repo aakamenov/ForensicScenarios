@@ -200,7 +200,7 @@
                             <Border x:Name="BoxBorder" BorderThickness="1" BorderBrush="#373f51" CornerRadius="8" Background="{TemplateBinding Background}">
                                 <Grid>
                                     <ScrollViewer>
-                                        <TextBlock Text="{TemplateBinding Text}" Margin="5 5 5 5" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{TemplateBinding Text}" Margin="5 5 5 5" TextWrapping="Wrap" HorizontalAlignment="{TemplateBinding TextAlignment}"/>
                                     </ScrollViewer>
                                 </Grid>
                             </Border>
@@ -241,7 +241,7 @@
                             <Border x:Name="BoxBorder" BorderThickness="1" BorderBrush="#373f51" CornerRadius="8" Background="{TemplateBinding Background}">
                                 <Grid>
                                     <ScrollViewer>
-                                        <TextBlock Text="{TemplateBinding Text}" Margin="5 5 5 5" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{TemplateBinding Text}" Margin="5 5 5 5" TextWrapping="Wrap" HorizontalAlignment="{TemplateBinding TextAlignment}"/>
                                     </ScrollViewer>
                                 </Grid>
                             </Border>

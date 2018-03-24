@@ -2,7 +2,7 @@
 
 namespace ForensicScenarios.ViewModels
 {
-    public class ShellbagScenarioViewModel : ScenarioCategoryViewModel
+    public sealed class ShellbagScenarioViewModel : ScenarioCategoryViewModel
     {
         public ShellbagScenarioViewModel(Shellbag shellbag) : base()
         {

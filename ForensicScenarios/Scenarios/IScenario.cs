@@ -5,6 +5,6 @@
         void Run();
         bool IsSelected { get; set; }
         string Name { get; }
-        string Description { get; }
+        string Description { get; set; }
     }
 }

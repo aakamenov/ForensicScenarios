@@ -81,12 +81,12 @@ namespace ForensicScenarios.ViewModels
             ShellbagScenarioViewModel shellbag,
             EncryptionScenarioViewModel encryption, 
             ScreenshotScenarioViewModel screenshot,
-            ReverseShellViewModel reverseShell)
+            InternetSecurityViewModel internetSecurity)
         {
             Items.Add(shellbag);
             Items.Add(encryption);
             Items.Add(screenshot);
-            Items.Add(reverseShell);
+            Items.Add(internetSecurity);
 
             totalScenarioCount = Items.Select(x => x.Scenarios.Count).Sum(); 
 
@@ -122,13 +122,11 @@ namespace ForensicScenarios.ViewModels
             IsRunning = true;
             ScenarioOutput = string.Empty;
 
-            //https://stackoverflow.com/questions/2329978/the-calling-thread-must-be-sta-because-many-ui-components-require-this
-            //Application.Current.Dispatcher.InvokeAsync(RunInOrder);
             var scenario = SelectedScenarios.First();
             UpdateRunningInfo(scenario);
+
+            //https://stackoverflow.com/questions/2329978/the-calling-thread-must-be-sta-because-many-ui-components-require-this
             Application.Current.Dispatcher.InvokeAsync(scenario.Run);
-            //SelectedScenarios.Apply(async x => 
-            //                        await Application.Current.Dispatcher.InvokeAsync(new System.Action(x.Run)));
         }
 
         public void SelectionChanged(SelectionChangedEventArgs e)
@@ -192,7 +190,7 @@ namespace ForensicScenarios.ViewModels
         {
             ScenarioDescription = $"Currently running: {scenario.Name}\n";
 
-            if (SelectedScenarios.Count != 0)
+            if (SelectedScenarios.Count > 1)
             {
                 var multiple = SelectedScenarios.Count > 1 ? "s" : string.Empty;
                 ScenarioDescription += $"{SelectedScenarios.Count} scenario{multiple} to go";

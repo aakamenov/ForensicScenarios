@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.IO;
 using System.Windows;
@@ -8,6 +6,7 @@ using System.Security.Cryptography;
 using Caliburn.Micro;
 using ForensicScenarios.Events;
 using ForensicScenarios.ViewModels;
+using ForensicScenarios.Tools;
 
 namespace ForensicScenarios.Scenarios
 {
@@ -28,7 +27,6 @@ namespace ForensicScenarios.Scenarios
         }
 
         private bool isSelected;
-        private string[] passwords;
         private string currentPassword;
 
         private const string FILENAME = "\\example.txt";
@@ -53,12 +51,6 @@ namespace ForensicScenarios.Scenarios
         public void Run()
         {
             SetupPrompt();
-
-            if (passwords is null)
-            {
-                passwords = Properties.Resources.Passwords.Split(new string[] { Environment.NewLine },
-                                                                 StringSplitOptions.RemoveEmptyEntries);
-            }
 
             ClrPrevious();
             CreateFolderFile();
@@ -117,7 +109,7 @@ namespace ForensicScenarios.Scenarios
                 msg = "Removing previous files...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         public void CreateFile()
@@ -132,22 +124,21 @@ namespace ForensicScenarios.Scenarios
 
             try
             {
-
                 Directory.CreateDirectory(path);
 
                 using (StreamWriter text = File.CreateText(path + FILENAME))
                     text.WriteLine("This is an example text file. Now this file will be encrypted. Look at RAM > " + path + FILENAME);
 
-                msg = "Directory has been created...✔\n";
+                msg = "Directory has been created...✔";
                 msg += "File with plain text was created...✔";
             }
             catch(Exception)
             {
-                msg = "Directory has been created...✖\n";
+                msg = "Directory has been created...✖";
                 msg += "File with plain text was created...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         public void EncryptFile()
@@ -156,9 +147,7 @@ namespace ForensicScenarios.Scenarios
 
             try
             {
-                var rnd = new Random();
-                var index = rnd.Next(0, passwords.Length - 1);
-                currentPassword = passwords[index];
+                currentPassword = ResourcesManager.GetRandomPassword();
 
                 Encrypt(path + FILENAME, path + FILENAME_ENCRYPTED, currentPassword);
 
@@ -169,7 +158,7 @@ namespace ForensicScenarios.Scenarios
                 msg = "File with encrypted text was created...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         public void Encrypt(string input, string output, string strHash)

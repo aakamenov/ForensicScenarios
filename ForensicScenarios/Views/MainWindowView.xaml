@@ -10,8 +10,8 @@
         mc:Ignorable="d"
         Style="{StaticResource FS-Window}"
         Title="Forensic Scenarios" 
-        Height="580" Width="920"
-        MinHeight="580" MinWidth="920"
+        Height="580" Width="960"
+        MinHeight="580" MinWidth="960"
         cal:Message.Attach="[Event Closing] = [Action OnClosing($eventArgs)]">
 
     <Window.Resources>
@@ -71,6 +71,7 @@
 
             <TextBox Grid.Row="0" 
                      Text="{Binding ScenarioDescription}" 
+                     TextAlignment="Center"
                      Style="{StaticResource FS-TextBox-Readonly}"/>
             
             <Grid Grid.Row="1">
@@ -103,7 +104,8 @@
         <Grid Grid.Column="1" Grid.RowSpan="2" Margin="10 0 0 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.5*"/>
-                <RowDefinition Height="9.5*"/>
+                <RowDefinition Height="6.6*"/>
+                <RowDefinition Height="1.5*"/>
             </Grid.RowDefinitions>
             
             <Label Grid.Row="0"
@@ -111,12 +113,17 @@
                    Margin="0 0 0 0"
                    Content="Scenario Output:"/>
             
-            <TextBox     
-                Margin="0 0 0 20"
-                Grid.Row="1"
-                Style="{StaticResource FS-TextBox-Readonly}"
-                Text="{Binding ScenarioOutput}"
-                VerticalScrollBarVisibility="Auto"/>
+            <TextBox Grid.Row="1"
+                     Margin="0 5 0 0"
+                     TextAlignment="Left"
+                     Style="{StaticResource FS-TextBox-Readonly}"
+                     Text="{Binding ScenarioOutput}"
+                     VerticalScrollBarVisibility="Auto"/>
+
+            <Button Grid.Row="2" 
+                    Content="Export Output" 
+                    Margin="56 21 56 21"
+                    Style="{StaticResource FS-Button}"/>
         </Grid>
     </Grid>
 </Window>

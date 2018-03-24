@@ -2,7 +2,7 @@
 
 namespace ForensicScenarios.ViewModels
 {
-    public class EncryptionScenarioViewModel : ScenarioCategoryViewModel
+    public sealed class EncryptionScenarioViewModel : ScenarioCategoryViewModel
     {
         public EncryptionScenarioViewModel(
             DESEncryption desEncryption,

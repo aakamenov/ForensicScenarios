@@ -80,7 +80,7 @@ namespace ForensicScenarios.Scenarios
                     msg = "Removing previous files...✖";
                 }
 
-                eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+                eventAggregator.SendStatusInfo(this, msg);
             }
         }
 
@@ -100,7 +100,7 @@ namespace ForensicScenarios.Scenarios
                 msg = "File deleted...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         private void MoveFile(string f, string d)
@@ -119,7 +119,7 @@ namespace ForensicScenarios.Scenarios
                 msg = "File moved...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         private void CopyFile(string f, string d)
@@ -138,7 +138,7 @@ namespace ForensicScenarios.Scenarios
                 msg = "File Copied...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         private void CreateFile(string t, string p, string f)
@@ -146,7 +146,7 @@ namespace ForensicScenarios.Scenarios
             ExecuteCommandSync((object)("echo " + t + " >" + Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\ForensicBot\\" + p + f));
 
             var msg = "File " + f + " created...✔";
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         private void CreateFolder(string path, string s)
@@ -163,7 +163,7 @@ namespace ForensicScenarios.Scenarios
                 msg = "Folder " + s + " created...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         private void ExecuteCommandSync(object command)

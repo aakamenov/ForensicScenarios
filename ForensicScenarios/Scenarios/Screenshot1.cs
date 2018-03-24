@@ -71,7 +71,7 @@ namespace ForensicScenarios.Scenarios
                 msg = "Removing previous files...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
 
         private void CreateFile(string srcpath, string dstpath, string newfilename)
@@ -85,18 +85,18 @@ namespace ForensicScenarios.Scenarios
        
                 Image data = ScreenCapture.CaptureScreen();
                 data.Save(str2, ImageFormat.Jpeg);
-                msg = "Capturing screenshot and saving to desktop...✔\n";
+                msg = "Capturing screenshot and saving to desktop...✔";
 
                 File.Move(str2, dstpath + newfilename);
                 msg += "Moving file to a new location...✔";
             }
             catch(Exception)
             {
-                msg = "Capturing screenshot and saving to desktop...✖\n";
+                msg = "Capturing screenshot and saving to desktop...✖";
                 msg += "Moving file to a new location...✖";
             }
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioStatusUpdated(this, msg));
+            eventAggregator.SendStatusInfo(this, msg);
         }
     }
 }

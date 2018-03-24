@@ -2,7 +2,7 @@
 
 namespace ForensicScenarios.ViewModels
 {
-    public class ScreenshotScenarioViewModel : ScenarioCategoryViewModel
+    public sealed class ScreenshotScenarioViewModel : ScenarioCategoryViewModel
     {
         public ScreenshotScenarioViewModel(
             Screenshot1 screenshot1,
