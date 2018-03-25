@@ -6,12 +6,14 @@ namespace ForensicScenarios.ViewModels
     {
         public EncryptionScenarioViewModel(
             DESEncryption desEncryption,
-            AESEncryption aesEncryption) : base()
+            AESEncryption aesEncryption,
+            TrueCrypt trueCrypt) : base()
         {
             DisplayName = "Encryption";
 
             Scenarios.Add(desEncryption);
             Scenarios.Add(aesEncryption);
+            Scenarios.Add(trueCrypt);
         }
     }
 }

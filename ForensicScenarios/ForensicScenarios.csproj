@@ -85,6 +85,7 @@
     <Compile Include="Scenarios\Screenshot2.cs" />
     <Compile Include="Scenarios\Shellbag.cs" />
     <Compile Include="Scenarios\SQLInjection.cs" />
+    <Compile Include="Scenarios\TrueCrypt.cs" />
     <Compile Include="Tools\EventAggregatorExtensions.cs" />
     <Compile Include="Tools\ProcessService.cs" />
     <Compile Include="Tools\ResourcesManager.cs" />

@@ -7,7 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
+using System.IO;
 using Caliburn.Micro;
+using Microsoft.Win32;
 using ForensicScenarios.Scenarios;
 using ForensicScenarios.Tools;
 using ForensicScenarios.Events;
@@ -53,6 +55,8 @@ namespace ForensicScenarios.ViewModels
         public string RunScenariosButtonText => $"Run Scenarios\n({SelectedScenarios.Count}/{totalScenarioCount})";
 
         public bool CanRunScenarios => SelectedScenarios.Count > 0 && IsRunning is false;
+
+        public bool CanSaveLogs => !string.IsNullOrEmpty(ScenarioOutput);
 
         public bool TabControlEnabled => !IsRunning;
 
@@ -129,6 +133,42 @@ namespace ForensicScenarios.ViewModels
             Application.Current.Dispatcher.InvokeAsync(scenario.Run);
         }
 
+        public async void SaveLogs()
+        {
+            var browser = new SaveFileDialog()
+            {
+                CheckPathExists = true,
+                CreatePrompt = true,
+                DefaultExt = ".txt",
+                Filter = "Text | .txt"
+            };
+
+            bool? result = browser.ShowDialog();
+
+            if (result is null || result is false) //If no files were selected or the window was closed
+                return;
+
+            var extension = Path.GetExtension(@browser.FileName);
+
+            if (extension != ".txt")
+            {
+                MessageBox.Show("The file must have \".txt\" extension!",
+                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            using (var file = File.CreateText(browser.FileName))
+            {
+                var now = DateTime.Now;
+                var header = $"Forensic Scenario Bot Log File\n{now.ToShortDateString()} - {now.ToShortTimeString()}\n";
+
+                var split = (header + ScenarioOutput).Split(new char[] { '\n' });
+                var contents = string.Join(Environment.NewLine, split);
+
+                await file.WriteAsync(contents);
+            }
+        }
+
         public void SelectionChanged(SelectionChangedEventArgs e)
         {
             foreach (var item in e.AddedItems)
@@ -172,6 +212,7 @@ namespace ForensicScenarios.ViewModels
             else
             {
                 IsRunning = false;
+                NotifyOfPropertyChange(nameof(CanSaveLogs));
                 EmptyDescription();
             }
         }

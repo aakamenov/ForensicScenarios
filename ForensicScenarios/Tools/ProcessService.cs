@@ -13,9 +13,9 @@ namespace ForensicScenarios.Tools
             processes = new List<Process>();
         }
 
-        public static Process CreateCmdProcess(string path, bool createWindow = true, bool redirectInput = false, bool redirectOutput = false)
+        public static Process CreateCmdProcess(string arguments, bool createWindow = true, bool redirectInput = false, bool redirectOutput = false)
         {
-            var processStartInfo = new ProcessStartInfo("cmd", path + "/c ")
+            var processStartInfo = new ProcessStartInfo("cmd", "/c " + arguments)
             { 
                 RedirectStandardOutput = redirectOutput,
                 RedirectStandardInput = redirectInput,
@@ -35,10 +35,12 @@ namespace ForensicScenarios.Tools
             return process;
         }
 
-        public static Process CreateProcess(string path, string arguments)
+        public static Process CreateProcess(string path, string arguments, bool redirectInput = false, bool redirectOutput = false)
         {
             var processStartInfo = new ProcessStartInfo(path, arguments)
             {
+                RedirectStandardOutput = redirectOutput,
+                RedirectStandardInput = redirectInput,
                 UseShellExecute = false
             };
 

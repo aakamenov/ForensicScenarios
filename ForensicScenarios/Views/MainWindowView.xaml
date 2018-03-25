@@ -121,7 +121,8 @@
                      VerticalScrollBarVisibility="Auto"/>
 
             <Button Grid.Row="2" 
-                    Content="Export Output" 
+                    Content="Export Output"
+                    cal:Message.Attach="SaveLogs"
                     Margin="56 21 56 21"
                     Style="{StaticResource FS-Button}"/>
         </Grid>

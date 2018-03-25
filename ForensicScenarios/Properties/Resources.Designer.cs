@@ -184,5 +184,19 @@ namespace ForensicScenarios.Properties {
                 return ResourceManager.GetString("RandomWords", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ZcWrzSyvc75tQFrdmpm2kjdKx1FEgLIMfN5qZ9mMg+n0krKOnaq9aUrqmcS3JgjCXUD9lWs3a4jGMC8b
+        ///        K5XQOop0zkfns6Bsc2FM4gpo08K/YzJ/Qyipylk+Vz6kYgSzRQtlpFMkUK3PjiI98/6KxTet0DbcBZ+B
+        ///        tbknwmH1oJvq/rSof4d8gRS+i/+KQsR15wnuHnpNs8w+kc8aRuZ2PkFWqpVWCN2oXmgJKIs7Xxv/9K7o
+        ///        VIIY05n/wg+54cSAkUDXfwirjdl4+Xr2RToes1Eeq7OEoxRrXIOA8OgQsnsGJjIAcVNIUVU61LiqOjLp
+        ///        w+GB4PsshPD+G+Ri/FB7E+HCW3HUcwZYD96VYg1Ya0Venud9ny9sWyP9VXbZf7E9GwMFz4Y8HzdJnE+e
+        ///        niKxGyPoqbOJnkFwYdvVWhfBZegdWYWGPFaTobGK3GFGrIOfMu4lDsKfubJaTW [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TrueCryptDisk {
+            get {
+                return ResourceManager.GetString("TrueCryptDisk", resourceCulture);
+            }
+        }
     }
 }

@@ -39,6 +39,7 @@ namespace ForensicScenarios
             container.PerRequest<SQLInjection>();
             container.PerRequest<Browser>();
             container.PerRequest<BrowserNavigation>();
+            container.PerRequest<TrueCrypt>();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
