@@ -5,9 +5,9 @@ namespace ForensicScenarios.Tools
 {
     public static class Wait
     {
-        public static async Task ForTimeAsync(TimeSpan seconds)
+        public static async Task ForTimeAsync(TimeSpan timeSpan)
         {
-            await Task.Delay(seconds);
+            await Task.Delay(timeSpan);
         }
     }
 }

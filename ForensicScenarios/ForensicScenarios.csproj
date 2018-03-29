@@ -89,7 +89,6 @@
     <Compile Include="Tools\EventAggregatorExtensions.cs" />
     <Compile Include="Tools\ProcessService.cs" />
     <Compile Include="Tools\ResourcesManager.cs" />
-    <Compile Include="Tools\ScreenCapture.cs" />
     <Compile Include="Tools\TabContent.cs" />
     <Compile Include="Tools\Wait.cs" />
     <Compile Include="ViewModels\EncryptionScenarioViewModel.cs" />

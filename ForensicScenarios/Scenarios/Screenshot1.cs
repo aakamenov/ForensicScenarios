@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using Forms = System.Windows.Forms;
 using Caliburn.Micro;
 using ForensicScenarios.Tools;
 using ForensicScenarios.Events;
@@ -44,11 +45,14 @@ namespace ForensicScenarios.Scenarios
             string str1 = "Not a suspicious file.txt";
             string str2 = "Daphne and Celeste - Ooh Stick You.mp3";
 
+            string keysent1 = "%{PRTSC}";
+            string keysent2 = "{PRTSC}";
+
             ClrPrevious(dstpath1, str1);
-            CreateFile(srcpath, dstpath1, str1);
+            CreateFile(srcpath, dstpath1, str1, keysent1);
 
             ClrPrevious(dstpath2, str2);
-            CreateFile(srcpath, dstpath2, str2);
+            CreateFile(srcpath, dstpath2, str2, keysent2);
 
             eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
         }
@@ -74,25 +78,27 @@ namespace ForensicScenarios.Scenarios
             eventAggregator.SendStatusInfo(this, msg);
         }
 
-        private void CreateFile(string srcpath, string dstpath, string newfilename)
+        private void CreateFile(string srcpath, string dstpath, string newfilename, string keysent)
         {
             var msg = string.Empty;
 
             try
             {
-                string str1 = DateTime.Now.ToString("yyyyMMddHHmmss");
-                string str2 = srcpath + "image" + str1 + ".jpeg";
-       
-                Image data = ScreenCapture.CaptureScreen();
+                var str1 = DateTime.Now.ToString("yyyyMMddHHmmss");
+                var str2 = srcpath + "image" + str1 + ".jpeg";
+
+                Forms.SendKeys.SendWait(keysent);
+                Image data = (Image)Forms.Clipboard.GetDataObject().GetData(Forms.DataFormats.Bitmap);
+
                 data.Save(str2, ImageFormat.Jpeg);
-                msg = "Capturing screenshot and saving to desktop...✔";
+                msg = "Capturing screenshot and saving to desktop...✔\n";
 
                 File.Move(str2, dstpath + newfilename);
                 msg += "Moving file to a new location...✔";
             }
             catch(Exception)
             {
-                msg = "Capturing screenshot and saving to desktop...✖";
+                msg = "Capturing screenshot and saving to desktop...✖\n";
                 msg += "Moving file to a new location...✖";
             }
 
