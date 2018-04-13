@@ -48,7 +48,7 @@ namespace ForensicScenarios.Scenarios
             windowManager = manager;
             eventAggregator = aggregator;
             
-            Description = "The AES Encryption Scenario\n\nThe Advanced Encryption Standard or AES is a symmetric block cipher used by the U.S. government to protect classified information and is implemented in software and hardware throughout the world to encrypt sensitive data.\nThis will create a folder in the forensic bot folder on your desktop. Within this folder, a plain text file will be created. This file will then be encrypted using a password.\n";
+            Description = "The Advanced Encryption Standard or AES is a symmetric block cipher used by the U.S. government to protect classified information and is implemented in software and hardware throughout the world to encrypt sensitive data.\nThis will create a folder in the forensic bot folder on your desktop. Within this folder, a plain text file will be created. This file will then be encrypted using a password.\n";
         }
 
         public void Run()

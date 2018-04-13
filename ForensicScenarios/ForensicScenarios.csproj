@@ -80,6 +80,8 @@
     <Compile Include="Scenarios\BrowserScenarioBase.cs" />
     <Compile Include="Scenarios\DESEncryption.cs" />
     <Compile Include="Scenarios\IScenario.cs" />
+    <Compile Include="Scenarios\NmapScan.cs" />
+    <Compile Include="Scenarios\ReverseShellVictim.cs" />
     <Compile Include="Scenarios\ReverseShell.cs" />
     <Compile Include="Scenarios\Screenshot1.cs" />
     <Compile Include="Scenarios\Screenshot2.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Scenarios\SQLInjection.cs" />
     <Compile Include="Scenarios\TrueCrypt.cs" />
     <Compile Include="Tools\EventAggregatorExtensions.cs" />
+    <Compile Include="Tools\LocalSoftware.cs" />
     <Compile Include="Tools\ProcessService.cs" />
     <Compile Include="Tools\ResourcesManager.cs" />
     <Compile Include="Tools\TabContent.cs" />

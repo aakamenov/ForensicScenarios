@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -121,7 +122,7 @@ namespace ForensicScenarios.ViewModels
             ScenarioDescription = string.Empty;
         }
 
-        public void RunScenarios()
+        public async void RunScenarios()
         {
             IsRunning = true;
             ScenarioOutput = string.Empty;
@@ -130,7 +131,7 @@ namespace ForensicScenarios.ViewModels
             UpdateRunningInfo(scenario);
 
             //https://stackoverflow.com/questions/2329978/the-calling-thread-must-be-sta-because-many-ui-components-require-this
-            Application.Current.Dispatcher.InvokeAsync(scenario.Run);
+            await Application.Current.Dispatcher.InvokeAsync(scenario.Run);
         }
 
         public async void SaveLogs()
@@ -157,15 +158,25 @@ namespace ForensicScenarios.ViewModels
                 return;
             }
 
-            using (var file = File.CreateText(browser.FileName))
+            try
             {
-                var now = DateTime.Now;
-                var header = $"Forensic Scenario Bot Log File\n{now.ToShortDateString()} - {now.ToShortTimeString()}\n";
+                using (var file = File.CreateText(browser.FileName))
+                {
+                    var now = DateTime.Now;
+                    var header = $"Forensic Scenario Bot Log File\n{now.ToShortDateString()} - {now.ToShortTimeString()}\n";
 
-                var split = (header + ScenarioOutput).Split(new char[] { '\n' });
-                var contents = string.Join(Environment.NewLine, split);
+                    var split = (header + ScenarioOutput).Split(new char[] { '\n' });
+                    var contents = string.Join(Environment.NewLine, split);
 
-                await file.WriteAsync(contents);
+                    await file.WriteAsync(contents);
+                }
+            }
+            catch(Exception e)
+            {
+                if(e is IOException)
+                    MessageBox.Show($"Error: {e.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                    MessageBox.Show($"An error occurred while saving file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -222,11 +233,6 @@ namespace ForensicScenarios.ViewModels
             ScenarioOutput += $"{message.StatusMessage}\n";
         }
 
-        public void Exit()
-        {
-            Application.Current.MainWindow.Close();
-        }
-
         private void UpdateRunningInfo(IScenario scenario)
         {
             ScenarioDescription = $"Currently running: {scenario.Name}\n";
@@ -238,6 +244,33 @@ namespace ForensicScenarios.ViewModels
             }
 
             ScenarioOutput += $"\n{scenario.Name}:\n";
+        }
+
+        public void Help()
+        {
+            try
+            {
+                var docPath = Path.GetFullPath("./Documentation/User Manual.pdf");
+
+                if(!File.Exists(docPath))
+                {
+                    var dir = Path.GetDirectoryName(docPath);
+
+                    MessageBox.Show($"The user manual could not be located at \"{dir}\".", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                Process.Start(docPath);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show($"Error: {e.Message}.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void Exit()
+        {
+            Application.Current.MainWindow.Close();
         }
     }
 }

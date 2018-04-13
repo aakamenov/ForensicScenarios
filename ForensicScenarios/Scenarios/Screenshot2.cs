@@ -32,7 +32,7 @@ namespace ForensicScenarios.Scenarios
         public Screenshot2(IEventAggregator aggregator)
         {
             eventAggregator = aggregator;
-            Description = "The Screenshot Scenario 2\n\nThis Screenshot scenario will take number of screenshots of the active window and the whole screen with the bot minimised and momentarily save the file to the desktop.\n\nThese files will then be renamed, have their extensions changed and be moved to various folders on your hard drive.";
+            Description = "This Screenshot scenario will take number of screenshots of the active window and the whole screen with the bot minimised and momentarily save the file to the desktop.\n\nThese files will then be renamed, have their extensions changed and be moved to various folders on your hard drive.";
         }
 
         public void Run()

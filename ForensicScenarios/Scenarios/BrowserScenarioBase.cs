@@ -8,7 +8,7 @@ using ForensicScenarios.Tools;
 
 namespace ForensicScenarios.Scenarios
 {
-    public class BrowserScenarioBase : PropertyChangedBase
+    public abstract class BrowserScenarioBase : PropertyChangedBase
     {
         protected string GetDefaultBrowserPath()
         {
@@ -74,8 +74,8 @@ namespace ForensicScenarios.Scenarios
         /// Kills all processes which match the specified name.
         /// </summary>
         /// <param name="name"></param>
-        /// <exception cref="InvalidOperationException"
-        /// <exception cref="NotSupportedException"
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
         protected async Task CloseOpenInstancesAsync(string name)
         {
             var processes = Process.GetProcessesByName(name);

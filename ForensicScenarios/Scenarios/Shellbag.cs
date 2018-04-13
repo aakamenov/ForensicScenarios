@@ -31,7 +31,7 @@ namespace ForensicScenarios.Scenarios
         public Shellbag(IEventAggregator aggregator)
         {
             eventAggregator = aggregator;
-            Description = "The Shellbags Scenario\n\nThis scenario will create randomly named folders and files. The files will be copied, moved and in some cases deleted. This will cause changes to be made to the ShellBags information in the registry.";
+            Description = "This scenario will create randomly named folders and files. The files will be copied, moved and in some cases deleted. This will cause changes to be made to the ShellBags information in the registry.";
         }
 
         public void Run()

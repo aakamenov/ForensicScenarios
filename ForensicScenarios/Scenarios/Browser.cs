@@ -28,7 +28,7 @@ namespace ForensicScenarios.Scenarios
         public Browser(IEventAggregator aggregator)
         {
             eventAggregator = aggregator;
-            Description = "The Browser Search Scenario\n\nIn order to simulate a user activity, a search engine will be opened in private browsing mode using the default browser. A random word search will then be performed and a link may be navigated to.\n\nRunning this scenario will close currently open default browser windows.";
+            Description = "In order to simulate a user activity, a search engine will be opened in private browsing mode using the default browser. A random word search will then be performed and a link may be navigated to.\n\nRunning this scenario will close currently open default browser windows.";
         }
 
         public async void Run()

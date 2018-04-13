@@ -13,14 +13,20 @@ namespace ForensicScenarios.Tools
             processes = new List<Process>();
         }
 
-        public static Process CreateCmdProcess(string arguments, bool createWindow = true, bool redirectInput = false, bool redirectOutput = false)
+        public static Process CreateCmdProcess(string arguments = "", 
+                                               bool terminateAfterExecution = true, 
+                                               bool createWindow = true, 
+                                               bool redirectInput = false, 
+                                               bool redirectOutput = false)
         {
-            var processStartInfo = new ProcessStartInfo("cmd", "/c " + arguments)
+            var terminate = terminateAfterExecution ? "/c " : string.Empty;
+
+            var processStartInfo = new ProcessStartInfo("cmd.exe", terminate + arguments)
             { 
                 RedirectStandardOutput = redirectOutput,
                 RedirectStandardInput = redirectInput,
                 UseShellExecute = false,
-                CreateNoWindow = !createWindow,
+                CreateNoWindow = !createWindow
             };
 
             var process = new Process()
@@ -78,7 +84,10 @@ namespace ForensicScenarios.Tools
 
         private static void Process_Exited(object sender, EventArgs e)
         {
-            processes.Remove(sender as Process);
+            var process = sender as Process;
+            process.Exited -= Process_Exited;
+
+            processes.Remove(process);
         }
     }
 }

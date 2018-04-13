@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using System.Security;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using Caliburn.Micro;
@@ -31,7 +32,6 @@ namespace ForensicScenarios.Scenarios
         private bool isSelected;
         private readonly IEventAggregator eventAggregator;
         private char volume = 'M';
-        private string application;
 
         public TrueCrypt(IEventAggregator aggregator)
         {
@@ -39,77 +39,57 @@ namespace ForensicScenarios.Scenarios
             Description = "TrueCrypt is an example of a freeware encryption utility used for on-the-fly encryption (OTFE). It can create a virtual encrypted disk within a file or encrypt a partition. It supports 32-bit and 64-bit versions of Windows, OS X and Linux operating systems.\n\nTrueCrypt is vulnerable to various known attacks which are also present in other software-based disk encryption software such as BitLocker. To prevent those, requires users to follow various security precautions. Development of TrueCrypt was ended in May 2014.\n\nThis scenario will mount an encrypted drive and manipulate a file within the drive before dismounting it.";
         }
 
-        public void Run()
+        public async void Run()
         {
-            if(!IsInstalled())
+            await Task.Run( () => 
             {
-                eventAggregator.SendStatusInfo(this, "Could not find TrueCrypt installation. Terminating scenario execution...");
-                eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
-                return;
-            }
-
-            ClearPrevious(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\ForensicBot\\True Crypt");
-
-            CreateFolder();
-
-            if (!LoadDisk())
-            {
-                eventAggregator.SendStatusInfo(this, "Could not load TrueCrypt disk. Terminating scenario execution...");
-                eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
-
-                return;
-            }
-
-            eventAggregator.SendStatusInfo(this, "Copying encrypted file to machine\n");
-
-            if (MountDisk())
-            {
-                try
+                if (!IsInstalled())
                 {
-                    OpenFile();
-                    eventAggregator.SendStatusInfo(this, "Mounting additional disk...✔\n");
-                    ReadDrive();
-                }
-                catch
-                {
-                    eventAggregator.SendStatusInfo(this, "Mounting additional disk...✖\n");
+                    eventAggregator.SendStatusInfo(this, "Could not find TrueCrypt installation. Terminating scenario execution...");
+                    eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
+                    return;
                 }
 
-                try
-                {
-                    eventAggregator.SendStatusInfo(this, "Unmounting addtional disk...✔\n");
-                    UnmountDisk();
-                }
-                catch
-                {
-                    eventAggregator.SendStatusInfo(this, "Unmounting addtional disk...✖\n");
-                }
-            }
+                ClearPrevious(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\ForensicBot\\True Crypt");
 
-            eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
-        }
+                CreateFolder();
 
-        private bool IsInstalled()
-        {
-            string name = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
-            using (RegistryKey registryKey1 = Registry.LocalMachine.OpenSubKey(name))
-            {
-                foreach (string subKeyName in registryKey1.GetSubKeyNames())
+                if (!LoadDisk())
                 {
-                    using (RegistryKey registryKey2 = registryKey1.OpenSubKey(subKeyName))
+                    eventAggregator.SendStatusInfo(this, "Could not load TrueCrypt disk. Terminating scenario execution...");
+                    eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
+
+                    return;
+                }
+
+                eventAggregator.SendStatusInfo(this, "Copying encrypted file to machine\n");
+
+                if (MountDisk())
+                {
+                    try
                     {
-                        if (registryKey2.GetValue("DisplayName") != null)
-                        {
-                            if (registryKey2.GetValue("DisplayName").ToString().Contains("TrueCrypt"))
-                            {
-                                application = registryKey2.GetValue("DisplayName").ToString();
-                                return true;
-                            }
-                        }
+                        OpenFile();
+                        eventAggregator.SendStatusInfo(this, "Mounting additional disk...✔\n");
+                        ReadDrive();
+                    }
+                    catch
+                    {
+                        eventAggregator.SendStatusInfo(this, "Mounting additional disk...✖\n");
+                    }
+
+                    try
+                    {
+                        eventAggregator.SendStatusInfo(this, "Unmounting addtional disk...✔\n");
+                        UnmountDisk();
+                    }
+                    catch
+                    {
+                        eventAggregator.SendStatusInfo(this, "Unmounting addtional disk...✖\n");
                     }
                 }
-            }
-            return false;
+
+                eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
+            });
         }
 
         private void ClearPrevious(string path)
@@ -206,7 +186,7 @@ namespace ForensicScenarios.Scenarios
         {
             try
             {
-                var process = ProcessService.CreateCmdProcess(command.ToString(), false, redirectOutput: true);
+                var process = ProcessService.CreateCmdProcess(arguments: command.ToString(), createWindow: false, redirectOutput: true);
                 process.Start();
 
                 Console.WriteLine(process.StandardOutput.ReadToEnd());
@@ -214,6 +194,27 @@ namespace ForensicScenarios.Scenarios
             catch(Exception e)
             {
                 eventAggregator.SendStatusInfo(this, $"An unexpected error ocurred: \"{e.Message}\"");
+            }
+        }
+
+        private bool IsInstalled()
+        {
+            try
+            {
+                return LocalSoftware.IsInstalled("TrueCrypt");
+            }
+            catch (Exception e)
+            {
+                if (e is IOException ||
+                e is SecurityException ||
+                e is UnauthorizedAccessException)
+                {
+                    eventAggregator.SendStatusInfo(this, $"An error occurred: {e.Message}\nTerminating scenario execution...");
+                }
+                else
+                    eventAggregator.SendStatusInfo(this, "An error occurred while trying to locate the Nmap installation.\nTerminating scenario execution...");
+
+                return false;
             }
         }
 

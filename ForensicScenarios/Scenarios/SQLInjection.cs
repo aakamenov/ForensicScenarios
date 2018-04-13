@@ -4,7 +4,7 @@ using System.Windows;
 using System.Net.Http;
 using Caliburn.Micro;
 using ForensicScenarios.Events;
-using ForensicScenarios.ViewModels;
+using ForensicScenarios.Tools;
 
 namespace ForensicScenarios.Scenarios
 {
@@ -31,6 +31,7 @@ namespace ForensicScenarios.Scenarios
         public SQLInjection(IEventAggregator aggregator)
         {
             eventAggregator = aggregator;
+            Description = "SQL injection is an exploitation technique which arises from unsanitised queries to an SQL database.This technique can be used to display or modify data within a SQL database which you would not otherwise have access to, such as users or other sensitive data.\n\nRunning this scenario will cause this machine to attempt to access the local network's webserver. It will then exploit the login field of the website which is vulnerable to SQL injection.";
         }
 
         public async void Run()
@@ -49,12 +50,15 @@ namespace ForensicScenarios.Scenarios
 
                 try
                 {
+                    eventAggregator.SendStatusInfo(this, "Attempting to send POST request to server...");
                     var response = await client.PostAsync(client.BaseAddress.AbsolutePath, content);
                     response.EnsureSuccessStatusCode();
+                    eventAggregator.SendStatusInfo(this, "Sent POST request...✔");
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message);
+                    eventAggregator.SendStatusInfo(this, e.Message);
+                    eventAggregator.SendStatusInfo(this, "Sent POST request...✖");
                 }
                 finally
                 {

@@ -33,6 +33,7 @@ namespace ForensicScenarios
             container.PerRequest<AESEncryption>();
             container.PerRequest<DESEncryption>();
             container.PerRequest<ReverseShell>();
+            container.PerRequest<ReverseShellVictim>();
             container.PerRequest<Screenshot1>();
             container.PerRequest<Screenshot2>();
             container.PerRequest<Shellbag>();
@@ -40,6 +41,7 @@ namespace ForensicScenarios
             container.PerRequest<Browser>();
             container.PerRequest<BrowserNavigation>();
             container.PerRequest<TrueCrypt>();
+            container.PerRequest<NmapScan>();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)

@@ -45,7 +45,7 @@ namespace ForensicScenarios.Scenarios
             windowManager = manager;
             eventAggregator = aggregator;
 
-            Description = "The DES Encryption Scenario\n\nThe Data Encryption Standard (DES) is an outdated symmetric-key method of data encryption. It works by using the same key to encrypt and decrypt a message, so both the sender and the receiver must know and use the same private key. Replaced by more secure Advanced Encryption Standard (AES) algorithm.\nThis will create a folder in the forensic bot folder on your desktop. Within this folder, a plain text file will be created. This file will then be encrypted using a password.";
+            Description = "The Data Encryption Standard (DES) is an outdated symmetric-key method of data encryption. It works by using the same key to encrypt and decrypt a message, so both the sender and the receiver must know and use the same private key. Replaced by more secure Advanced Encryption Standard (AES) algorithm.\nThis will create a folder in the forensic bot folder on your desktop. Within this folder, a plain text file will be created. This file will then be encrypted using a password.";
         }
 
         public void Run()

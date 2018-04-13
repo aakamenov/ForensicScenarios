@@ -10,8 +10,8 @@
         mc:Ignorable="d"
         Style="{StaticResource FS-Window}"
         Title="Forensic Scenarios" 
-        Height="580" Width="960"
-        MinHeight="580" MinWidth="960"
+        Height="630" Width="960"
+        MinHeight="630" MinWidth="960"
         cal:Message.Attach="[Event Closing] = [Action OnClosing($eventArgs)]">
 
     <Window.Resources>
@@ -33,8 +33,8 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="6.5*"/>
+            <ColumnDefinition Width="3.5*"/>
         </Grid.ColumnDefinitions>
 
         <TabControl 
@@ -89,7 +89,8 @@
                         Style="{StaticResource FS-Button}"/>
                 
                 <Button Grid.Row="1" 
-                        Grid.Column="1" 
+                        Grid.Column="1"
+                        cal:Message.Attach="Help"
                         Content="Help" 
                         Margin="35 20 35 20"
                         Style="{StaticResource FS-Button}"/>

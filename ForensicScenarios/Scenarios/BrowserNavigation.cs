@@ -41,7 +41,7 @@ namespace ForensicScenarios.Scenarios
         public BrowserNavigation(IEventAggregator aggregator)
         {
             eventAggregator = aggregator;
-            Description = "The Website Browsing Scenario\n\nTo simulate user activities, a number of websites will be opened in a private window. A link found on the websites may then be navigated to.\n\nRunning this scenario will close currently open default browser windows.\n\nTo override which websites are browsed, create a text file named \"url.txt\" in the root directory of the tool and enter the websites URLs there, separated by a new line.";
+            Description = "To simulate user activities, a number of websites will be opened in a private window. A link found on the websites may then be navigated to.\n\nRunning this scenario will close currently open default browser windows.\n\nTo override which websites are browsed, create a text file named \"url.txt\" in the root directory of the tool and enter the websites URLs there, separated by a new line.";
         }
 
         public async void Run()
