@@ -8,11 +8,11 @@ using ForensicScenarios.Events;
 
 namespace ForensicScenarios.Scenarios
 {
-    public class NmapScan : PropertyChangedBase, IScenario
+    public abstract class NmapBase : PropertyChangedBase, IScenario
     {
-        public string Name => "Nmap Scan";
+        public abstract string Name { get; }
 
-        public string Description { get; set; }
+        public abstract string Description { get; set; }
 
         public bool IsSelected
         {
@@ -26,15 +26,16 @@ namespace ForensicScenarios.Scenarios
 
         private bool isSelected;
 
-        private readonly IEventAggregator eventAggregator;
+        protected readonly IEventAggregator eventAggregator;
 
-        public NmapScan(IEventAggregator aggregator)
+        public NmapBase(IEventAggregator aggregator)
         {
             eventAggregator = aggregator;
-            Description = "Nmap is an open-source network mapping tool used for network discovery and security auditing.Nmap can also use sophisticated scanning methods to detect which services are running on a computer, making it valuable for attackers.\n\nRunning this scenario will cause this machine to attempt to scan the victim computer for open ports, and which services may be running on these ports.";
         }
 
-        public async void Run()
+        public abstract void Run();
+
+        protected async Task RunNmap(string flag)
         {
             await Task.Run(async () =>
             {
@@ -45,11 +46,12 @@ namespace ForensicScenarios.Scenarios
                 }
 
                 var ip = "10.201.0.42";
-                var cmd = ProcessService.CreateCmdProcess(string.Empty, false, redirectInput: true, redirectOutput: true);
+                var command = $"nmap {flag} {ip}";
 
+                var cmd = ProcessService.CreateCmdProcess(string.Empty, false, redirectInput: true, redirectOutput: true);
                 cmd.Start();
 
-                cmd.StandardInput.WriteLine("nmap -sS " + ip);
+                cmd.StandardInput.WriteLine(command);
                 await Wait.ForTimeAsync(TimeSpan.FromSeconds(2));
                 cmd.StandardInput.WriteLine("exit");
 
@@ -64,7 +66,7 @@ namespace ForensicScenarios.Scenarios
             });
         }
 
-        private bool IsInstalled()
+        protected bool IsInstalled()
         {
             try
             {

@@ -41,7 +41,9 @@ namespace ForensicScenarios
             container.PerRequest<Browser>();
             container.PerRequest<BrowserNavigation>();
             container.PerRequest<TrueCrypt>();
-            container.PerRequest<NmapScan>();
+            container.PerRequest<NmapScanST>();
+            container.PerRequest<NmapScanSU>();
+            container.PerRequest<NmapScanSS>();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)

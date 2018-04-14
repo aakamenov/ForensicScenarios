@@ -10,7 +10,9 @@ namespace ForensicScenarios.ViewModels
             SQLInjection injection, 
             Browser browser,
             BrowserNavigation browserNavigation,
-            NmapScan nmap)
+            NmapScanSS nmapSS,
+            NmapScanST nmapST,
+            NmapScanSU nmapSU)
         {
             DisplayName = "Internet Security";
 
@@ -19,7 +21,9 @@ namespace ForensicScenarios.ViewModels
             Scenarios.Add(injection);
             Scenarios.Add(browser);
             Scenarios.Add(browserNavigation);
-            Scenarios.Add(nmap);
+            Scenarios.Add(nmapSS);
+            Scenarios.Add(nmapST);
+            Scenarios.Add(nmapSU);
         }
     }
 }

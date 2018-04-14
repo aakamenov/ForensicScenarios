@@ -80,7 +80,10 @@
     <Compile Include="Scenarios\BrowserScenarioBase.cs" />
     <Compile Include="Scenarios\DESEncryption.cs" />
     <Compile Include="Scenarios\IScenario.cs" />
-    <Compile Include="Scenarios\NmapScan.cs" />
+    <Compile Include="Scenarios\NmapBase.cs" />
+    <Compile Include="Scenarios\NmapScanSS.cs" />
+    <Compile Include="Scenarios\NmapScanST.cs" />
+    <Compile Include="Scenarios\NmapScanSU.cs" />
     <Compile Include="Scenarios\ReverseShellVictim.cs" />
     <Compile Include="Scenarios\ReverseShell.cs" />
     <Compile Include="Scenarios\Screenshot1.cs" />

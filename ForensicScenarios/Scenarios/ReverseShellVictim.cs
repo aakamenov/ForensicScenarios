@@ -49,8 +49,9 @@ namespace ForensicScenarios.Scenarios
                 prc.Kill();
 
             var contents = prc.StandardOutput.ReadToEnd();
-            eventAggregator.SendStatusInfo(this, contents);
 
+            eventAggregator.SendStatusInfo(this, contents);
+            eventAggregator.SendStatusInfo(this, "Reverse shell successful...✔");
             eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
         }
     }
