@@ -60,6 +60,7 @@ namespace ForensicScenarios.Scenarios
             MoveFile("\\" + s2 + "\\" + str2 + ".txt", "\\" + s3 + "\\" + str2 + ".txt");
             DeleteFile("\\" + s1 + "\\", "*.txt");
 
+            eventAggregator.SendStatusInfo(this, "Shellbag completed...✔");
             eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
         }
 

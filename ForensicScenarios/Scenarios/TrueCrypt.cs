@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.IO;
-using System.Diagnostics;
 using System.Security;
 using System.Threading.Tasks;
-using Microsoft.Win32;
 using Caliburn.Micro;
 using ForensicScenarios.Tools;
 using ForensicScenarios.Events;
@@ -88,6 +84,7 @@ namespace ForensicScenarios.Scenarios
                     }
                 }
 
+                eventAggregator.SendStatusInfo(this, "TrueCrypt completed...✔");
                 eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
             });
         }

@@ -54,6 +54,7 @@ namespace ForensicScenarios.Scenarios
             ClrPrevious(dstpath2, str2);
             CreateFile(srcpath, dstpath2, str2, keysent2);
 
+            eventAggregator.SendStatusInfo(this, "Screenshot 2 completed...✔");
             eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
         }
 

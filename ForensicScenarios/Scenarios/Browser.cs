@@ -96,6 +96,7 @@ namespace ForensicScenarios.Scenarios
                 eventAggregator.SendStatusInfo(this, "Closing browser...✖");
             }
 
+            eventAggregator.SendStatusInfo(this, "Browser Search complete...✔");
             eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
         }
     }

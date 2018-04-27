@@ -89,6 +89,7 @@ namespace ForensicScenarios.Scenarios
                 await RunBrowserNavigation(url.AbsoluteUri, name, browserPath, parameter);
             }
 
+            eventAggregator.SendStatusInfo(this, "Browser Navigation complete...✔");
             eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
         }
 

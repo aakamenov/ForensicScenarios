@@ -61,7 +61,6 @@ namespace ForensicScenarios.Scenarios
                     cmd.Kill();
 
                 eventAggregator.SendStatusInfo(this, "Nmap completed!");
-
                 eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
             });
         }

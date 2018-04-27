@@ -62,6 +62,7 @@ namespace ForensicScenarios.Scenarios
                 }
                 finally
                 {
+                    eventAggregator.SendStatusInfo(this, "SQL Injection completed...✔");
                     eventAggregator.BeginPublishOnUIThread(new ScenarioCompleted(this));
                 }
             }
